@@ -2,58 +2,50 @@ package main
 
 import (
 	"encoding/json"
+	entity "glue/glue-backend-golang/entity"
+	repository "glue/glue-backend-golang/repository"
 	"net/http"
 )
 
 // IPlace struct with details of a single space
-type IPlace struct {
-	ConfirmPageTitle string `json:"confirmPageTitle"`
-	PhoneNumber      string `json:"phoneNumber"`
-	VisitPlaceName   string `json:"visitPlaceName"`
-	SlackSentMessage string `json:"slackSentMessage"`
-	SlackWebHookURL  string `json:"slackWebHookURL"`
-}
+// type IPlace struct {
+// 	ConfirmPageTitle string `json:"confirmPageTitle"`
+// 	PhoneNumber      string `json:"phoneNumber"`
+// 	VisitPlaceName   string `json:"visitPlaceName"`
+// 	SlackSentMessage string `json:"slackSentMessage"`
+// 	SlackWebHookURL  string `json:"slackWebHookURL"`
+// }
 
 var (
-	places []IPlace
+	repo repository.PlaceRepository = repository.NewPlaceRepository()
 )
-
-func init() {
-	places = []IPlace{{ConfirmPageTitle: "confirmed",
-		PhoneNumber:      "9907e2245678",
-		VisitPlaceName:   "Cambodia",
-		SlackSentMessage: "no man no",
-		SlackWebHookURL:  "someURL",
-	}}
-}
 
 // GetPlaces gets places
 func GetPlaces(res http.ResponseWriter, req *http.Request) {
 	res.Header().Set("Content-type", "application/json")
-	result, err := json.Marshal(places)
+	places, err := repo.FindAll()
 	if err != nil {
 		res.WriteHeader(http.StatusInternalServerError)
-		res.Write([]byte(`{"error": "Error marshalling the places array}`))
-		return
+		res.Write([]byte(`{"error": "Error fetching the places}`))
 	}
 	res.WriteHeader(http.StatusOK)
-	res.Write(result)
+	json.NewEncoder(res).Encode(places)
 }
 
 // AddPlace adds a place
 func AddPlace(res http.ResponseWriter, req *http.Request) {
 	res.Header().Set("Content-type", "application/json")
-	var place IPlace
+	var place entity.IPlace
 	err := json.NewDecoder(req.Body).Decode(&place)
 	if err != nil {
 		res.WriteHeader(http.StatusInternalServerError)
 		res.Write([]byte(`{"error": "Error marshalling the request}`))
 		return
 	}
-	// place.Id = len(places) + 1
-	places = append(places, place)
+	// place.ID, err = rand.Int()
+	// needs math/rand in imports
+	repo.Save(&place)
 	res.WriteHeader(http.StatusOK)
-	result, err := json.Marshal(places)
-	res.Write(result)
+	json.NewEncoder(res).Encode(place)
 
 }
