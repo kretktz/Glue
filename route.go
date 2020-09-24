@@ -7,7 +7,7 @@ import (
 	"net/http"
 )
 
-// IPlace struct with details of a single space
+// IPlace struct with details of a single place
 // type IPlace struct {
 // 	ConfirmPageTitle string `json:"confirmPageTitle"`
 // 	PhoneNumber      string `json:"phoneNumber"`
