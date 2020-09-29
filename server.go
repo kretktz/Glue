@@ -2,21 +2,30 @@ package main
 
 import (
 	"fmt"
-	"log"
 	"net/http"
 
-	"github.com/gorilla/mux"
+	controller "glue/glue-backend-golang/controller"
+	router "glue/glue-backend-golang/http"
+	repository "glue/glue-backend-golang/repository"
+	service "glue/glue-backend-golang/service"
+)
+
+var (
+	placeRepository repository.PlaceRepository = repository.NewFirestoreRepository()
+	placeService    service.PlaceService       = service.NewPlacesService(placeRepository)
+	placeController controller.PlaceController = controller.NewPlaceController(placeService)
+	httpRouter      router.Router              = router.NewChiRouter()
 )
 
 func main() {
-	router := mux.NewRouter()
+
 	const port string = ":8000"
-	router.HandleFunc("/", func(res http.ResponseWriter, req *http.Request) {
-		fmt.Fprintln(res, "Up and running...")
+	httpRouter.GET("/", func(w http.ResponseWriter, req *http.Request) {
+		fmt.Fprintln(w, "Up and running...")
 	})
-	router.HandleFunc("/places", GetPlaces).Methods("GET")
-	router.HandleFunc("/places", AddPlace).Methods("POST")
-	log.Println("Server listening on port", port)
-	log.Fatalln(http.ListenAndServe(port, router))
+	httpRouter.GET("/places", placeController.GetPlaces)
+	httpRouter.POST("/places", placeController.AddPlace)
+
+	httpRouter.SERVE(port)
 
 }
