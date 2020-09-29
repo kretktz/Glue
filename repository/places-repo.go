@@ -6,6 +6,6 @@ import (
 
 // PlaceRepository implements the methods Save and FindAll
 type PlaceRepository interface {
-	Save(place *entity.IPlace) (*entity.IPlace, error)
-	FindAll() ([]entity.IPlace, error)
+	Save(place *entity.Place) (*entity.Place, error)
+	FindAll() ([]entity.Place, error)
 }

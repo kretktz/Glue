@@ -1,7 +1,7 @@
 package entity
 
-// IPlace struct with details of a single space
-type IPlace struct {
+// Place struct with details of a single space
+type Place struct {
 	ConfirmPageTitle string `json:"confirmPageTitle"`
 	PhoneNumber      string `json:"phoneNumber"`
 	VisitPlaceName   string `json:"visitPlaceName"`

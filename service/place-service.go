@@ -8,9 +8,9 @@ import (
 
 // PlaceService implements the methods
 type PlaceService interface {
-	Validate(place *entity.IPlace) error
-	Create(place *entity.IPlace) (*entity.IPlace, error)
-	FindAll() ([]entity.IPlace, error)
+	Validate(place *entity.Place) error
+	Create(place *entity.Place) (*entity.Place, error)
+	FindAll() ([]entity.Place, error)
 }
 
 type service struct{}
@@ -19,13 +19,13 @@ var (
 	repo repository.PlaceRepository
 )
 
-//NewPlacesService creates a new service
-func NewPlacesService(repository repository.PlaceRepository) PlaceService {
+//NewPlaceService creates a new service
+func NewPlaceService(repository repository.PlaceRepository) PlaceService {
 	repo = repository
 	return &service{}
 }
 
-func (*service) Validate(place *entity.IPlace) error {
+func (*service) Validate(place *entity.Place) error {
 	if place == nil {
 		err := errors.New("The place is not specified")
 		return err
@@ -33,10 +33,10 @@ func (*service) Validate(place *entity.IPlace) error {
 	return nil
 }
 
-func (*service) Create(place *entity.IPlace) (*entity.IPlace, error) {
+func (*service) Create(place *entity.Place) (*entity.Place, error) {
 	return repo.Save(place)
 }
 
-func (*service) FindAll() ([]entity.IPlace, error) {
+func (*service) FindAll() ([]entity.Place, error) {
 	return repo.FindAll()
 }

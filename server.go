@@ -12,7 +12,7 @@ import (
 
 var (
 	placeRepository repository.PlaceRepository = repository.NewFirestoreRepository()
-	placeService    service.PlaceService       = service.NewPlacesService(placeRepository)
+	placeService    service.PlaceService       = service.NewPlaceService(placeRepository)
 	placeController controller.PlaceController = controller.NewPlaceController(placeService)
 	httpRouter      router.Router              = router.NewChiRouter()
 )

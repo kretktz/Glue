@@ -41,7 +41,7 @@ func (*controller) GetPlaces(res http.ResponseWriter, req *http.Request) {
 // AddPlace adds a place
 func (*controller) AddPlace(res http.ResponseWriter, req *http.Request) {
 	res.Header().Set("Content-type", "application/json")
-	var place entity.IPlace
+	var place entity.Place
 	err := json.NewDecoder(req.Body).Decode(&place)
 	if err != nil {
 		res.WriteHeader(http.StatusInternalServerError)

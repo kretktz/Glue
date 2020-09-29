@@ -18,10 +18,10 @@ func NewFirestoreRepository() PlaceRepository {
 
 const (
 	projectID      string = "glue-25e3b"
-	collectionName string = "IPlace"
+	collectionName string = "Place"
 )
 
-func (*repo) Save(place *entity.IPlace) (*entity.IPlace, error) {
+func (*repo) Save(place *entity.Place) (*entity.Place, error) {
 	ctx := context.Background()
 	client, err := firestore.NewClient(ctx, projectID)
 	if err != nil {
@@ -45,7 +45,7 @@ func (*repo) Save(place *entity.IPlace) (*entity.IPlace, error) {
 	return place, nil
 }
 
-func (*repo) FindAll() ([]entity.IPlace, error) {
+func (*repo) FindAll() ([]entity.Place, error) {
 	ctx := context.Background()
 	client, err := firestore.NewClient(ctx, projectID)
 	if err != nil {
@@ -55,7 +55,7 @@ func (*repo) FindAll() ([]entity.IPlace, error) {
 
 	defer client.Close()
 
-	var places []entity.IPlace
+	var places []entity.Place
 	it := client.Collection(collectionName).Documents(ctx)
 	for {
 		doc, err := it.Next()
@@ -66,7 +66,7 @@ func (*repo) FindAll() ([]entity.IPlace, error) {
 			log.Fatalf("Failed to iterate: %v", err)
 			return nil, err
 		}
-		place := entity.IPlace{
+		place := entity.Place{
 			ConfirmPageTitle: doc.Data()["ConfirmPageTitle"].(string),
 			PhoneNumber:      doc.Data()["PhoneNumber"].(string),
 			VisitPlaceName:   doc.Data()["VisitPlaceName"].(string),
