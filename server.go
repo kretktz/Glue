@@ -14,7 +14,7 @@ var (
 	placeRepository repository.PlaceRepository = repository.NewFirestoreRepository()
 	placeService    service.PlaceService       = service.NewPlaceService(placeRepository)
 	placeController controller.PlaceController = controller.NewPlaceController(placeService)
-	httpRouter      router.Router              = router.NewChiRouter()
+	httpRouter      router.Router              = router.NewMuxRouter()
 )
 
 func main() {
