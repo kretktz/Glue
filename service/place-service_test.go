@@ -27,7 +27,7 @@ func (mock *MockRepository) FindAll() ([]entity.Place, error) {
 func TestFindAll(t *testing.T) {
 	mockRepo := new(MockRepository)
 
-	place := entity.Place{ConfirmPageTitle: "Title", PhoneNumber: "5678", VisitPlaceName: "Some place Name", SlackSentMessage: "msg", SlackWebHookURL: "someURL"}
+	place := entity.Place{PlaceName: "Name", PlaceLocation: "Takamatsu", PhoneNumber: "5678"}
 	// Setup Expectations
 	mockRepo.On("FindAll").Return([]entity.Place{place}, nil)
 
@@ -39,17 +39,15 @@ func TestFindAll(t *testing.T) {
 	mockRepo.AssertExpectations(t)
 
 	//Data Assertion
-	assert.Equal(t, "Title", result[0].ConfirmPageTitle)
+	assert.Equal(t, "Name", result[0].PlaceName)
+	assert.Equal(t, "Takamatsu", result[0].PlaceLocation)
 	assert.Equal(t, "5678", result[0].PhoneNumber)
-	assert.Equal(t, "Some place Name", result[0].VisitPlaceName)
-	assert.Equal(t, "msg", result[0].SlackSentMessage)
-	assert.Equal(t, "someURL", result[0].SlackWebHookURL)
 }
 
 func TestCreate(t *testing.T) {
 	mockRepo := new(MockRepository)
 
-	place := entity.Place{ConfirmPageTitle: "Title", PhoneNumber: "5678", VisitPlaceName: "Some place Name", SlackSentMessage: "msg", SlackWebHookURL: "someURL"}
+	place := entity.Place{PlaceName: "Name", PlaceLocation: "Takamatsu", PhoneNumber: "5678"}
 
 	//Setup expectations
 	mockRepo.On("Save").Return(&place, nil)
@@ -60,11 +58,9 @@ func TestCreate(t *testing.T) {
 
 	mockRepo.AssertExpectations(t)
 
-	assert.Equal(t, "Title", result.ConfirmPageTitle)
+	assert.Equal(t, "Name", result.PlaceName)
+	assert.Equal(t, "Takamatsu", result.PlaceLocation)
 	assert.Equal(t, "5678", result.PhoneNumber)
-	assert.Equal(t, "Some place Name", result.VisitPlaceName)
-	assert.Equal(t, "msg", result.SlackSentMessage)
-	assert.Equal(t, "someURL", result.SlackWebHookURL)
 	assert.Nil(t, err)
 }
 

@@ -31,12 +31,11 @@ func (*repo) Save(place *entity.Place) (*entity.Place, error) {
 
 	defer client.Close()
 
+	//TODO: Wrap data into json unmarshal func
 	_, _, err = client.Collection(collectionName).Add(ctx, map[string]interface{}{
-		"ConfirmPageTitle": place.ConfirmPageTitle,
-		"PhoneNumber":      place.PhoneNumber,
-		"VisitPlaceName":   place.VisitPlaceName,
-		"SlackSentMessage": place.SlackSentMessage,
-		"SlackWebHookURL":  place.SlackWebHookURL,
+		"PlaceName":     place.PlaceName,
+		"PlaceLocation": place.PlaceLocation,
+		"PhoneNumber":   place.PhoneNumber,
 	})
 	if err != nil {
 		log.Fatalf("Failed to add a new place: %v", err)
@@ -67,11 +66,9 @@ func (*repo) FindAll() ([]entity.Place, error) {
 			return nil, err
 		}
 		place := entity.Place{
-			ConfirmPageTitle: doc.Data()["ConfirmPageTitle"].(string),
-			PhoneNumber:      doc.Data()["PhoneNumber"].(string),
-			VisitPlaceName:   doc.Data()["VisitPlaceName"].(string),
-			SlackSentMessage: doc.Data()["SlackSentMessage"].(string),
-			SlackWebHookURL:  doc.Data()["SlackWebHookURL"].(string),
+			PlaceName:     doc.Data()["PlaceName"].(string),
+			PlaceLocation: doc.Data()["PlaceLocation"].(string),
+			PhoneNumber:   doc.Data()["PhoneNumber"].(string),
 		}
 		places = append(places, place)
 	}
