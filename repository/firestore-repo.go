@@ -65,12 +65,34 @@ func (*repo) FindAll() ([]entity.Place, error) {
 			log.Fatalf("Failed to iterate: %v", err)
 			return nil, err
 		}
+		ticketRef := doc.Ref.Collection("Ticket")
+		var tickets []entity.Ticket
+		it := ticketRef.Documents(ctx)
+		for {
+			doc, err := it.Next()
+			if err == iterator.Done {
+				break
+			}
+			if err != nil {
+				log.Fatalf("Failed to iterate over tickets: %v", err)
+				return nil, err
+			}
+			ticket := entity.Ticket{
+				TicketType:         doc.Data()["TicketType"].(string),
+				NumberTicketsAvail: doc.Data()["NumberTicketsAvail"].(int64),
+			}
+
+			tickets = append(tickets, ticket)
+		}
+
 		place := entity.Place{
 			PlaceName:     doc.Data()["PlaceName"].(string),
 			PlaceLocation: doc.Data()["PlaceLocation"].(string),
 			PhoneNumber:   doc.Data()["PhoneNumber"].(string),
+			NumTickets:    tickets,
 		}
 		places = append(places, place)
 	}
 	return places, nil
+
 }
