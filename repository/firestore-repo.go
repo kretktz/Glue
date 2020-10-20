@@ -2,6 +2,8 @@ package repository
 
 import (
 	"context"
+	"encoding/json"
+	"fmt"
 	entity "glue/glue-backend-golang/entity"
 	"log"
 
@@ -77,12 +79,27 @@ func (*repo) FindAll() ([]entity.Place, error) {
 				log.Fatalf("Failed to iterate over tickets: %v", err)
 				return nil, err
 			}
-			ticket := entity.Ticket{
-				TicketType:         doc.Data()["TicketType"].(string),
-				NumberTicketsAvail: doc.Data()["NumberTicketsAvail"].(int64),
+			// ticket := entity.Ticket{
+			// 	TicketType:         doc.Data()["TicketType"].(string),
+			// 	NumberTicketsAvail: doc.Data()["NumberTicketsAvail"].(int64),
+			// }
+
+			// tickets = append(tickets, ticket)
+
+			aMap := make(map[string]interface{})
+			aMap = doc.Data()
+			b, err := json.Marshal(aMap)
+			if err != nil {
+				panic(err)
+			}
+			var ticket entity.Ticket
+			err23 := json.Unmarshal([]byte(b), &ticket)
+			if err23 != nil {
+				fmt.Println("error:", err)
 			}
 
 			tickets = append(tickets, ticket)
+
 		}
 
 		place := entity.Place{
