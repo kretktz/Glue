@@ -2,8 +2,6 @@ package repository
 
 import (
 	"context"
-	"encoding/json"
-	"fmt"
 	entity "glue/glue-backend-golang/entity"
 	"log"
 
@@ -79,35 +77,43 @@ func (*repo) FindAll() ([]entity.Place, error) {
 				log.Fatalf("Failed to iterate over tickets: %v", err)
 				return nil, err
 			}
+			// ticketMap := make(map[string]interface{})
+			// ticketMap = doc.Data()
+			// b, err := json.Marshal(ticketMap)
+			// if err != nil {
+			// 	log.Fatalf("Failed to marshal ticket data: %v", err)
+			// }
+			// var ticket entity.Ticket
+			// err2 := json.Unmarshal([]byte(b), &ticket)
+			// if err2 != nil {
+			// 	log.Fatalf("Failed to unmarshal ticket data: %v", err)
+			// }
+			var ticket entity.Ticket
+			if err := doc.DataTo(&ticket); err != nil {
+				log.Fatalf("Failed to fetch ticket data: %v", err)
+			}
+
+			tickets = append(tickets, ticket)
+			// previous setup
 			// ticket := entity.Ticket{
 			// 	TicketType:         doc.Data()["TicketType"].(string),
 			// 	NumberTicketsAvail: doc.Data()["NumberTicketsAvail"].(int64),
 			// }
 
-			// tickets = append(tickets, ticket)
-
-			aMap := make(map[string]interface{})
-			aMap = doc.Data()
-			b, err := json.Marshal(aMap)
-			if err != nil {
-				panic(err)
-			}
-			var ticket entity.Ticket
-			err23 := json.Unmarshal([]byte(b), &ticket)
-			if err23 != nil {
-				fmt.Println("error:", err)
-			}
-
-			tickets = append(tickets, ticket)
-
 		}
 
-		place := entity.Place{
-			PlaceName:     doc.Data()["PlaceName"].(string),
-			PlaceLocation: doc.Data()["PlaceLocation"].(string),
-			PhoneNumber:   doc.Data()["PhoneNumber"].(string),
-			NumTickets:    tickets,
+		var place entity.Place
+		if err := doc.DataTo(&place); err != nil {
+			log.Fatalf("Failed to fetch ticket data: %v", err)
 		}
+
+		// place := entity.Place{
+		// 	PlaceName:     doc.Data()["PlaceName"].(string),
+		// 	PlaceLocation: doc.Data()["PlaceLocation"].(string),
+		// 	PhoneNumber:   doc.Data()["PhoneNumber"].(string),
+		// 	NumTickets:    tickets,
+		// }
+
 		places = append(places, place)
 	}
 	return places, nil
