@@ -16,6 +16,11 @@ func NewFirestoreRepository() PlaceRepository {
 	return &repo{}
 }
 
+//NewISpaceRepository creates a new repository
+func NewISpaceRepository() ISpaceRepository {
+	return &repo{}
+}
+
 const (
 	projectID      string = "glue-25e3b"
 	collectionName string = "Place"
@@ -65,9 +70,11 @@ func (*repo) FindAll() ([]entity.Place, error) {
 			log.Fatalf("Failed to iterate: %v", err)
 			return nil, err
 		}
+
 		ticketRef := doc.Ref.Collection("Ticket")
 		var tickets []entity.Ticket
 		it := ticketRef.Documents(ctx)
+
 		for {
 			doc, err := it.Next()
 			if err == iterator.Done {
@@ -77,45 +84,70 @@ func (*repo) FindAll() ([]entity.Place, error) {
 				log.Fatalf("Failed to iterate over tickets: %v", err)
 				return nil, err
 			}
-			// ticketMap := make(map[string]interface{})
-			// ticketMap = doc.Data()
-			// b, err := json.Marshal(ticketMap)
-			// if err != nil {
-			// 	log.Fatalf("Failed to marshal ticket data: %v", err)
-			// }
-			// var ticket entity.Ticket
-			// err2 := json.Unmarshal([]byte(b), &ticket)
-			// if err2 != nil {
-			// 	log.Fatalf("Failed to unmarshal ticket data: %v", err)
-			// }
 			var ticket entity.Ticket
 			if err := doc.DataTo(&ticket); err != nil {
 				log.Fatalf("Failed to fetch ticket data: %v", err)
 			}
 
 			tickets = append(tickets, ticket)
-			// previous setup
-			// ticket := entity.Ticket{
-			// 	TicketType:         doc.Data()["TicketType"].(string),
-			// 	NumberTicketsAvail: doc.Data()["NumberTicketsAvail"].(int64),
-			// }
 
 		}
+		/*
+			var place entity.Place
+			if err := doc.DataTo(&place); err != nil {
+				log.Fatalf("Failed to fetch place data: %v", err)
+			}
 
-		var place entity.Place
-		if err := doc.DataTo(&place); err != nil {
-			log.Fatalf("Failed to fetch ticket data: %v", err)
+			var tickets []entity.Ticket
+			something := client.Collection(collectionName)
+			for _, t := range tickets {
+				if _, err := something.Doc(t.PlaceName).Collection("Ticket").NewDoc().Set(ctx, map[string]interface{}{
+					"TicketType":         t.TicketType,
+					"NumberTicketsAvail": t.NumberTicketsAvail,
+				}); err != nil {
+					log.Fatalf("Failed to fetch ticket data: %v", err)
+				}
+			}
+		*/
+		place := entity.Place{
+			PlaceName:     doc.Data()["PlaceName"].(string),
+			PlaceLocation: doc.Data()["PlaceLocation"].(string),
+			PhoneNumber:   doc.Data()["PhoneNumber"].(string),
+			NumTickets:    tickets,
 		}
-
-		// place := entity.Place{
-		// 	PlaceName:     doc.Data()["PlaceName"].(string),
-		// 	PlaceLocation: doc.Data()["PlaceLocation"].(string),
-		// 	PhoneNumber:   doc.Data()["PhoneNumber"].(string),
-		// 	NumTickets:    tickets,
-		// }
 
 		places = append(places, place)
 	}
 	return places, nil
 
+}
+
+func (*repo) ListSpaces() ([]entity.ISpace, error) {
+	ctx := context.Background()
+	client, err := firestore.NewClient(ctx, projectID)
+	if err != nil {
+		log.Fatalf("Failed to create a firestore client: %v", err)
+		return nil, err
+	}
+
+	defer client.Close()
+
+	var spaces []entity.ISpace
+	it := client.Collection("ISpace").Documents(ctx)
+	for {
+		doc, err := it.Next()
+		if err == iterator.Done {
+			break
+		}
+		if err != nil {
+			log.Fatalf("Failed to iterate: %v", err)
+			return nil, err
+		}
+		var space entity.ISpace
+		if err := doc.DataTo(&space); err != nil {
+			log.Fatalf("Failed to fetch space data: %v", err)
+		}
+		spaces = append(spaces, space)
+	}
+	return spaces, nil
 }

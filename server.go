@@ -14,7 +14,12 @@ var (
 	placeRepository repository.PlaceRepository = repository.NewFirestoreRepository()
 	placeService    service.PlaceService       = service.NewPlaceService(placeRepository)
 	placeController controller.PlaceController = controller.NewPlaceController(placeService)
-	httpRouter      router.Router              = router.NewMuxRouter()
+
+	ispaceRepository repository.ISpaceRepository = repository.NewISpaceRepository()
+	ispaceService    service.ISpaceService       = service.ListSpacesService(ispaceRepository)
+	ispaceController controller.ISpaceController = controller.NewISpaceController(ispaceService)
+
+	httpRouter router.Router = router.NewMuxRouter()
 )
 
 func main() {
@@ -25,6 +30,8 @@ func main() {
 	})
 	httpRouter.GET("/places", placeController.GetPlaces)
 	httpRouter.POST("/places", placeController.AddPlace)
+
+	httpRouter.GET("/spaces", ispaceController.ListSpaces)
 
 	httpRouter.SERVE(port)
 
