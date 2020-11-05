@@ -132,7 +132,9 @@ func (*repo) ListSpaces() ([]entity.ISpace, error) {
 
 	defer client.Close()
 
-	var spaces []entity.ISpace
+	var (
+		spaces []entity.ISpace
+	)
 	it := client.Collection("ISpace").Documents(ctx)
 	for {
 		doc, err := it.Next()
@@ -147,6 +149,54 @@ func (*repo) ListSpaces() ([]entity.ISpace, error) {
 		if err := doc.DataTo(&space); err != nil {
 			log.Fatalf("Failed to fetch space data: %v", err)
 		}
+
+		// getting ticket data
+		//method 1 - hardcoded
+		/*
+		ticketSnap, err := client.Collection("ITicket").Doc("RX9YD3fPXoKDesjbxxEI").Get(ctx)
+		if err != nil {
+			return nil, err
+		}
+		var ticket entity.ITicket
+		ticketSnap.DataTo(&ticket)
+		*/
+		/*
+		// method 2 - in development
+		var tempID string
+		tempID = space.UID
+		ticketSnap := client.Collection("ITicket").Where("UID", "==", tempID).Snapshots(ctx)
+		var ticket entity.ITicket
+		ticketSnap.
+		*/
+
+
+		// method 3 - nested for loop
+
+		var (
+			tempID string
+			ticket entity.ITicket
+			tickets []entity.ITicket
+		)
+		tempID = space.UID
+		ticketSnap := client.Collection("ITicket").Where("UID", "==", tempID).Documents(ctx)
+		for {
+			doc, err := ticketSnap.Next()
+			if err == iterator.Done {
+				break
+			}
+			if err != nil {
+				log.Fatalf("Failed to iterate over tickets: %v", err)
+				return nil, err
+			}
+			if err := doc.DataTo(&ticket); err != nil {
+				log.Fatalf("Failed to fetch ticket data: %v", err)
+			}
+			tickets = append(tickets, ticket)
+		}
+
+		// insert ticket data into space
+		space.Tickets = ticket
+
 		spaces = append(spaces, space)
 	}
 	return spaces, nil
