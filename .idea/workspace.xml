@@ -21,8 +21,9 @@
   <component name="ChangeListManager">
     <list default="true" id="957ab00c-e873-4518-b528-d793ce7656f6" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/entity/ispace.go" beforeDir="false" afterPath="$PROJECT_DIR$/entity/ispace.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/repository/firestore-repo.go" beforeDir="false" afterPath="$PROJECT_DIR$/repository/firestore-repo.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/repository/spaces-repo.go" beforeDir="false" afterPath="$PROJECT_DIR$/repository/spaces-repo.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/service/ispace-service_test.go" beforeDir="false" afterPath="$PROJECT_DIR$/service/ispace-service_test.go" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -58,9 +59,19 @@
     <property name="node.js.path.for.package.tslint" value="project" />
     <property name="node.js.selected.package.eslint" value="(autodetect)" />
     <property name="node.js.selected.package.tslint" value="(autodetect)" />
-    <property name="settings.editor.selected.configurable" value="preferences.sourceCode" />
+    <property name="settings.editor.selected.configurable" value="preferences.lookFeel" />
   </component>
-  <component name="RunManager">
+  <component name="RunManager" selected="Go Test.ispace-service_test.go">
+    <configuration name="ispace-service_test.go" type="GoTestRunConfiguration" factoryName="Go Test" temporary="true" nameIsGenerated="true">
+      <module name="glue-backend-golang" />
+      <working_directory value="$PROJECT_DIR$/service" />
+      <framework value="gotest" />
+      <kind value="FILE" />
+      <package value="glue/glue-backend-golang" />
+      <directory value="$PROJECT_DIR$" />
+      <filePath value="$PROJECT_DIR$/service/ispace-service_test.go" />
+      <method v="2" />
+    </configuration>
     <configuration name="place-service_test.go" type="GoTestRunConfiguration" factoryName="Go Test" temporary="true" nameIsGenerated="true">
       <module name="glue-backend-golang" />
       <working_directory value="$PROJECT_DIR$/service" />
@@ -73,6 +84,7 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Go Test.ispace-service_test.go" />
         <item itemvalue="Go Test.place-service_test.go" />
       </list>
     </recent_temporary>
@@ -98,25 +110,49 @@
       <screen x="1920" y="0" width="1920" height="1200" />
     </state>
     <state x="2588" y="402" width="645" height="403" key="#com.intellij.fileTypes.FileTypeChooser/72.147.1848.1053/1920.0.1920.1200@1920.0.1920.1200" timestamp="1603767136635" />
-    <state width="1802" height="324" key="GridCell.Tab.0.bottom" timestamp="1604539132514">
+    <state width="1802" height="399" key="GridCell.Tab.0.bottom" timestamp="1604982643614">
       <screen x="72" y="147" width="3768" height="1053" />
     </state>
-    <state width="1802" height="324" key="GridCell.Tab.0.bottom/72.147.3768.1053@72.147.3768.1053" timestamp="1604539132514" />
-    <state width="1802" height="324" key="GridCell.Tab.0.center" timestamp="1604539132512">
+    <state width="1802" height="324" key="GridCell.Tab.0.bottom/72.147.1848.1053/1920.0.1920.1200@1920.0.1920.1200" timestamp="1604975720376" />
+    <state width="1802" height="399" key="GridCell.Tab.0.bottom/72.147.3768.1053@72.147.3768.1053" timestamp="1604982643614" />
+    <state width="1802" height="399" key="GridCell.Tab.0.center" timestamp="1604982643613">
       <screen x="72" y="147" width="3768" height="1053" />
     </state>
-    <state width="1802" height="324" key="GridCell.Tab.0.center/72.147.3768.1053@72.147.3768.1053" timestamp="1604539132512" />
-    <state width="1802" height="324" key="GridCell.Tab.0.left" timestamp="1604539132512">
+    <state width="1802" height="324" key="GridCell.Tab.0.center/72.147.1848.1053/1920.0.1920.1200@1920.0.1920.1200" timestamp="1604975720376" />
+    <state width="1802" height="399" key="GridCell.Tab.0.center/72.147.3768.1053@72.147.3768.1053" timestamp="1604982643613" />
+    <state width="1802" height="399" key="GridCell.Tab.0.left" timestamp="1604982643612">
       <screen x="72" y="147" width="3768" height="1053" />
     </state>
-    <state width="1802" height="324" key="GridCell.Tab.0.left/72.147.3768.1053@72.147.3768.1053" timestamp="1604539132512" />
-    <state width="1802" height="324" key="GridCell.Tab.0.right" timestamp="1604539132513">
+    <state width="1802" height="324" key="GridCell.Tab.0.left/72.147.1848.1053/1920.0.1920.1200@1920.0.1920.1200" timestamp="1604975720375" />
+    <state width="1802" height="399" key="GridCell.Tab.0.left/72.147.3768.1053@72.147.3768.1053" timestamp="1604982643612" />
+    <state width="1802" height="399" key="GridCell.Tab.0.right" timestamp="1604982643613">
       <screen x="72" y="147" width="3768" height="1053" />
     </state>
-    <state width="1802" height="324" key="GridCell.Tab.0.right/72.147.3768.1053@72.147.3768.1053" timestamp="1604539132513" />
-    <state x="2091" y="317" width="1022" height="737" key="SettingsEditor" timestamp="1603344888568">
+    <state width="1802" height="324" key="GridCell.Tab.0.right/72.147.1848.1053/1920.0.1920.1200@1920.0.1920.1200" timestamp="1604975720376" />
+    <state width="1802" height="399" key="GridCell.Tab.0.right/72.147.3768.1053@72.147.3768.1053" timestamp="1604982643613" />
+    <state width="1802" height="399" key="GridCell.Tab.1.bottom" timestamp="1604982643615">
+      <screen x="72" y="147" width="3768" height="1053" />
+    </state>
+    <state width="1802" height="399" key="GridCell.Tab.1.bottom/72.147.3768.1053@72.147.3768.1053" timestamp="1604982643615" />
+    <state width="1802" height="399" key="GridCell.Tab.1.center" timestamp="1604982643615">
+      <screen x="72" y="147" width="3768" height="1053" />
+    </state>
+    <state width="1802" height="399" key="GridCell.Tab.1.center/72.147.3768.1053@72.147.3768.1053" timestamp="1604982643615" />
+    <state width="1802" height="399" key="GridCell.Tab.1.left" timestamp="1604982643614">
+      <screen x="72" y="147" width="3768" height="1053" />
+    </state>
+    <state width="1802" height="399" key="GridCell.Tab.1.left/72.147.3768.1053@72.147.3768.1053" timestamp="1604982643614" />
+    <state width="1802" height="399" key="GridCell.Tab.1.right" timestamp="1604982643615">
+      <screen x="72" y="147" width="3768" height="1053" />
+    </state>
+    <state width="1802" height="399" key="GridCell.Tab.1.right/72.147.3768.1053@72.147.3768.1053" timestamp="1604982643615" />
+    <state x="2696" y="296" width="1022" height="737" key="SettingsEditor" timestamp="1604972230875">
       <screen x="1920" y="0" width="1920" height="1200" />
     </state>
-    <state x="2091" y="317" width="1022" height="737" key="SettingsEditor/72.147.1848.1053/1920.0.1920.1200@1920.0.1920.1200" timestamp="1603344888568" />
+    <state x="2696" y="296" width="1022" height="737" key="SettingsEditor/72.147.1848.1053/1920.0.1920.1200@1920.0.1920.1200" timestamp="1604972230875" />
+    <state x="2579" y="269" width="672" height="678" key="search.everywhere.popup" timestamp="1604971318265">
+      <screen x="1920" y="0" width="1920" height="1200" />
+    </state>
+    <state x="2579" y="269" width="672" height="678" key="search.everywhere.popup/72.147.1848.1053/1920.0.1920.1200@1920.0.1920.1200" timestamp="1604971318265" />
   </component>
 </project>

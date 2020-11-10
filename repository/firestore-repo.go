@@ -160,6 +160,8 @@ func (*repo) ListSpaces() ([]entity.ISpace, error) {
 		var ticket entity.ITicket
 		ticketSnap.DataTo(&ticket)
 		*/
+
+
 		/*
 		// method 2 - in development
 		var tempID string

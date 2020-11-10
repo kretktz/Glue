@@ -1,7 +1,7 @@
 package service
 
 import (
-	entity "glue/glue-backend-golang/entity"
+	"glue/glue-backend-golang/entity"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -22,27 +22,29 @@ func TestListSpaces(t *testing.T) {
 	mockRepo := new(MockISpace)
 
 	space := entity.ISpace{Address: "some address",
-		Availability: "available",
-	Coordinates: "some coordinates",
-	Description: "some description",
-	ImageURLS: "some url.com",
-	Location: "some location",
-	Name: "some name",
-	NumberOfVisitors: "some number",
-	TelephoneNumber: "some number",
-	Tickets: entity.ITicket{Colour: "some colour",
-		Description: "some description",
-		Name:        "some name",
-		Period:      64,
-		Price:       64,
-		SpaceID:     "some id",
-		UID:         "some uid"},
-	TopImageURL: "some url.com",
-	UID: "some id",
-	VisitorGreeting: "some greeting",
-	VisitorSlackMessage: "some message",
-	VisitorSlackWebhookURL: "some url",
-	Website: "some website"}
+		Availability:     "available",
+		Coordinates:      "some coordinates",
+		Description:      "some description",
+		ImageURLS:        "some url.com",
+		Location:         "some location",
+		Name:             "some name",
+		NumberOfVisitors: "some number",
+		TelephoneNumber:  "some number",
+		Tickets: entity.ITicket{
+			Colour:      "some colour",
+			Description: "some description",
+			Name:        "some name",
+			Period:      64,
+			Price:       64,
+			SpaceID:     "some id",
+			UID:         "some uid",
+		},
+		TopImageURL:            "some url.com",
+		UID:                    "some id",
+		VisitorGreeting:        "some greeting",
+		VisitorSlackMessage:    "some message",
+		VisitorSlackWebhookURL: "some url",
+		Website:                "some website"}
 
 	// Setup Expectations
 	mockRepo.On("ListSpaces").Return([]entity.ISpace{space}, nil)
@@ -80,5 +82,4 @@ func TestListSpaces(t *testing.T) {
 	assert.Equal(t, "some url", result[0].VisitorSlackWebhookURL)
 	assert.Equal(t, "some website", result[0].Website)
 }
-
 
