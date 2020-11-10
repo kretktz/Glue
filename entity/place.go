@@ -1,6 +1,6 @@
 package entity
 
-// Place struct with details of a single space
+// Place struct with details of a single place
 type Place struct {
 	PlaceName     string   `json:"placeName"`
 	PlaceLocation string   `json:"placeLocation"`

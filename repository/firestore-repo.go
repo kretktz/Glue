@@ -151,6 +151,7 @@ func (*repo) ListSpaces() ([]entity.ISpace, error) {
 		}
 
 		// getting ticket data
+
 		//method 1 - hardcoded
 		/*
 		ticketSnap, err := client.Collection("ITicket").Doc("RX9YD3fPXoKDesjbxxEI").Get(ctx)
@@ -162,8 +163,9 @@ func (*repo) ListSpaces() ([]entity.ISpace, error) {
 		*/
 
 
-		/*
+
 		// method 2 - in development
+		/*
 		var tempID string
 		tempID = space.UID
 		ticketSnap := client.Collection("ITicket").Where("UID", "==", tempID).Snapshots(ctx)
@@ -173,7 +175,6 @@ func (*repo) ListSpaces() ([]entity.ISpace, error) {
 
 
 		// method 3 - nested for loop
-
 		var (
 			tempID string
 			ticket entity.ITicket

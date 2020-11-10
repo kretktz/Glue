@@ -5,7 +5,7 @@ import (
 	repository "glue/glue-backend-golang/repository"
 )
 
-// ISpaceService implements the methods
+// ISpaceService implements the method ListSpaces
 type ISpaceService interface {
 	ListSpaces() ([]entity.ISpace, error)
 }

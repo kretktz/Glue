@@ -6,7 +6,7 @@ import (
 	repository "glue/glue-backend-golang/repository"
 )
 
-// PlaceService implements the methods
+// PlaceService implements the methods Validate, Create and FindAll
 type PlaceService interface {
 	Validate(place *entity.Place) error
 	Create(place *entity.Place) (*entity.Place, error)
