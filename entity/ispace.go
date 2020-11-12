@@ -11,7 +11,7 @@ type ISpace struct {
 	Name                   string   `json:"name"`
 	NumberOfVisitors       string   `json:"number_of_visitors"`
 	TelephoneNumber        string   `json:"telephone_number"`
-	Tickets                ITicket `json:"tickets"`
+	Tickets                []ITicket `json:"tickets"`
 	TopImageURL            string   `json:"top_image_URL"`
 	UID                    string   `json:"uid"`
 	VisitorGreeting        string   `json:"visitor_greeting"`

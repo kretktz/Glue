@@ -162,19 +162,30 @@ func (*repo) ListSpaces() ([]entity.ISpace, error) {
 		ticketSnap.DataTo(&ticket)
 		*/
 
+		// method 2 - range over entire collection with matching UID
 
+		var (
+			tempID string
+			ticket entity.ITicket
+			tickets []entity.ITicket
+		)
 
-		// method 2 - in development
-		/*
-		var tempID string
 		tempID = space.UID
-		ticketSnap := client.Collection("ITicket").Where("UID", "==", tempID).Snapshots(ctx)
-		var ticket entity.ITicket
-		ticketSnap.
-		*/
-
+		ticketSnap := client.Collection("ITicket").Where("UID", "==", tempID)
+		docs, err := ticketSnap.Documents(ctx).GetAll()
+		if err != nil {
+			log.Fatalf(
+				"Failed to iterate over tickets: %v",
+				err,
+			)
+		}
+		for _, doc := range docs {
+			doc.DataTo(&ticket)
+			tickets = append(tickets, ticket)
+		}
 
 		// method 3 - nested for loop
+		/*
 		var (
 			tempID string
 			ticket entity.ITicket
@@ -196,9 +207,10 @@ func (*repo) ListSpaces() ([]entity.ISpace, error) {
 			}
 			tickets = append(tickets, ticket)
 		}
+		*/
 
 		// insert ticket data into space
-		space.Tickets = ticket
+		space.Tickets = tickets
 
 		spaces = append(spaces, space)
 	}
