@@ -4,22 +4,26 @@ import (
 	"fmt"
 	"net/http"
 
-	controller "glue/glue-backend-golang/controller"
+	"glue/glue-backend-golang/controller"
 	router "glue/glue-backend-golang/http"
-	repository "glue/glue-backend-golang/repository"
-	service "glue/glue-backend-golang/service"
+	"glue/glue-backend-golang/repository"
+	"glue/glue-backend-golang/service"
 )
 
 var (
-	placeRepository repository.PlaceRepository = repository.NewFirestoreRepository()
-	placeService    service.PlaceService       = service.NewPlaceService(placeRepository)
-	placeController controller.PlaceController = controller.NewPlaceController(placeService)
+	placeRepository = repository.NewFirestoreRepository()
+	placeService    = service.NewPlaceService(placeRepository)
+	placeController = controller.NewPlaceController(placeService)
 
-	ispaceRepository repository.ISpaceRepository = repository.NewISpaceRepository()
-	ispaceService    service.ISpaceService       = service.ListSpacesService(ispaceRepository)
-	ispaceController controller.ISpaceController = controller.NewISpaceController(ispaceService)
+	ISpaceRepository = repository.NewISpaceRepository()
+	ISpaceService    = service.SpacesService(ISpaceRepository)
+	ISpaceController = controller.NewISpaceController(ISpaceService)
 
-	httpRouter router.Router = router.NewMuxRouter()
+	ITicketRepository = repository.NewITicketRepository()
+	ITicketService = service.TicketService(ITicketRepository)
+	ITicketController = controller.NewITicketController(ITicketService)
+
+	httpRouter = router.NewMuxRouter()
 )
 
 func main() {
@@ -31,7 +35,10 @@ func main() {
 	httpRouter.GET("/places", placeController.GetPlaces)
 	httpRouter.POST("/places", placeController.AddPlace)
 
-	httpRouter.GET("/spaces", ispaceController.ListSpaces)
+	httpRouter.GET("/spaces", ISpaceController.ListSpaces)
+	httpRouter.GET("/spaceByID", ISpaceController.GetSpaceByID)
+
+	httpRouter.GET("/availableTickets", ITicketController.ListAllAvailableTickets)
 
 	httpRouter.SERVE(port)
 

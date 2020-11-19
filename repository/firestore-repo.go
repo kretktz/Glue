@@ -11,6 +11,7 @@ import (
 
 type repo struct{}
 
+
 //NewFirestoreRepository creates a new repository
 func NewFirestoreRepository() PlaceRepository {
 	return &repo{}
@@ -20,6 +21,12 @@ func NewFirestoreRepository() PlaceRepository {
 func NewISpaceRepository() ISpaceRepository {
 	return &repo{}
 }
+
+//NewITicketRepository creates a new repository
+func NewITicketRepository() ITicketRepository {
+	return &repo{}
+}
+
 
 const (
 	projectID      string = "glue-25e3b"
@@ -92,23 +99,7 @@ func (*repo) FindAll() ([]entity.Place, error) {
 			tickets = append(tickets, ticket)
 
 		}
-		/*
-			var place entity.Place
-			if err := doc.DataTo(&place); err != nil {
-				log.Fatalf("Failed to fetch place data: %v", err)
-			}
 
-			var tickets []entity.Ticket
-			something := client.Collection(collectionName)
-			for _, t := range tickets {
-				if _, err := something.Doc(t.PlaceName).Collection("Ticket").NewDoc().Set(ctx, map[string]interface{}{
-					"TicketType":         t.TicketType,
-					"NumberTicketsAvail": t.NumberTicketsAvail,
-				}); err != nil {
-					log.Fatalf("Failed to fetch ticket data: %v", err)
-				}
-			}
-		*/
 		place := entity.Place{
 			PlaceName:     doc.Data()["PlaceName"].(string),
 			PlaceLocation: doc.Data()["PlaceLocation"].(string),
@@ -152,18 +143,6 @@ func (*repo) ListSpaces() ([]entity.ISpace, error) {
 
 		// getting ticket data
 
-		//method 1 - hardcoded
-		/*
-		ticketSnap, err := client.Collection("ITicket").Doc("RX9YD3fPXoKDesjbxxEI").Get(ctx)
-		if err != nil {
-			return nil, err
-		}
-		var ticket entity.ITicket
-		ticketSnap.DataTo(&ticket)
-		*/
-
-		// method 2 - range over entire collection with matching UID
-
 		var (
 			tempID string
 			ticket entity.ITicket
@@ -184,35 +163,78 @@ func (*repo) ListSpaces() ([]entity.ISpace, error) {
 			tickets = append(tickets, ticket)
 		}
 
-		// method 3 - nested for loop
-		/*
-		var (
-			tempID string
-			ticket entity.ITicket
-			tickets []entity.ITicket
-		)
-		tempID = space.UID
-		ticketSnap := client.Collection("ITicket").Where("UID", "==", tempID).Documents(ctx)
-		for {
-			doc, err := ticketSnap.Next()
-			if err == iterator.Done {
-				break
-			}
-			if err != nil {
-				log.Fatalf("Failed to iterate over tickets: %v", err)
-				return nil, err
-			}
-			if err := doc.DataTo(&ticket); err != nil {
-				log.Fatalf("Failed to fetch ticket data: %v", err)
-			}
-			tickets = append(tickets, ticket)
-		}
-		*/
-
 		// insert ticket data into space
 		space.Tickets = tickets
 
 		spaces = append(spaces, space)
 	}
 	return spaces, nil
+}
+
+func (*repo) GetSpaceByID() ([]entity.ISpace, error) {
+	ctx := context.Background()
+	client, err := firestore.NewClient(ctx, projectID)
+	if err != nil {
+		log.Fatalf("Failed to create a firestore client: %v", err)
+		return nil, err
+	}
+
+	defer client.Close()
+
+	var (
+		spaceID string
+		space entity.ISpace
+		spaces []entity.ISpace
+	)
+	//TODO: change the hardcoded string to a user provided json
+	spaceID = "4577"
+	it := client.Collection("ISpace").Where("UID", "==", spaceID).Documents(ctx)
+	for {
+		doc, err := it.Next()
+		if err == iterator.Done {
+			break
+		}
+		if err != nil {
+			log.Fatalf("Failed to iterate: %v", err)
+			return nil, err
+		}
+		if err := doc.DataTo(&space); err != nil {
+			log.Fatalf("Failed to fetch space data: %v", err)
+		}
+		spaces = append(spaces, space)
+	}
+	return spaces, nil
+}
+
+func (r *repo) ListAllAvailableTickets() ([]entity.ITicket, error) {
+	ctx := context.Background()
+	client, err := firestore.NewClient(ctx, projectID)
+	if err != nil {
+		log.Fatalf("Failed to create a firestore client: %v", err)
+		return nil, err
+	}
+
+	defer client.Close()
+
+	var (
+		ticket entity.ITicket
+		tickets []entity.ITicket
+	)
+	//TODO: change the hardcoded string to a user provided json
+	it := client.Collection("ITicket").Where("Availability", ">", 0).Documents(ctx)
+	for {
+		doc, err := it.Next()
+		if err == iterator.Done {
+			break
+		}
+		if err != nil {
+			log.Fatalf("Failed to iterate: %v", err)
+			return nil, err
+		}
+		if err := doc.DataTo(&ticket); err != nil {
+			log.Fatalf("Failed to fetch available tickets data: %v", err)
+		}
+		tickets = append(tickets, ticket)
+	}
+	return tickets, nil
 }

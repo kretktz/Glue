@@ -12,6 +12,12 @@ type MockISpace struct {
 	mock.Mock
 }
 
+func (mock *MockISpace) GetSpaceByID() ([]entity.ISpace, error) {
+	args := mock.Called()
+	result := args.Get(0)
+	return result.([]entity.ISpace), args.Error(1)
+}
+
 func (mock *MockISpace) ListSpaces() ([]entity.ISpace, error) {
 	args := mock.Called()
 	result := args.Get(0)
@@ -30,14 +36,14 @@ func TestListSpaces(t *testing.T) {
 		Name:             "some name",
 		NumberOfVisitors: "some number",
 		TelephoneNumber:  "some number",
-		Tickets: entity.ITicket{
-			Colour:      "some colour",
-			Description: "some description",
-			Name:        "some name",
-			Period:      64,
-			Price:       64,
-			SpaceID:     "some id",
-			UID:         "some uid",
+		Tickets: []entity.ITicket{
+			//Colour:      "some colour",
+			//Description: "some description",
+			//Name:        "some name",
+			//Period:      64,
+			//Price:       64,
+			//SpaceID:     "some id",
+			//UID:         "some uid",
 		},
 		TopImageURL:            "some url.com",
 		UID:                    "some id",
@@ -49,7 +55,7 @@ func TestListSpaces(t *testing.T) {
 	// Setup Expectations
 	mockRepo.On("ListSpaces").Return([]entity.ISpace{space}, nil)
 
-	testService := ListSpacesService(mockRepo)
+	testService := SpacesService(mockRepo)
 
 	result, _ := testService.ListSpaces()
 

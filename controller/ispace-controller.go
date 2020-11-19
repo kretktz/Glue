@@ -2,8 +2,8 @@ package controller
 
 import (
 	"encoding/json"
-	errors "glue/glue-backend-golang/errors"
-	service "glue/glue-backend-golang/service"
+	"glue/glue-backend-golang/errors"
+	"glue/glue-backend-golang/service"
 	"net/http"
 )
 
@@ -11,9 +11,10 @@ var (
 	spaceService service.ISpaceService
 )
 
-//ISpaceController interface to implement ListSpaces method
+//ISpaceController interface to implement ListSpaces and GetSpaceByID method
 type ISpaceController interface {
 	ListSpaces(res http.ResponseWriter, req *http.Request)
+	GetSpaceByID(res http.ResponseWriter, req *http.Request)
 }
 
 //NewISpaceController returns controller
@@ -28,7 +29,19 @@ func (*controller) ListSpaces(res http.ResponseWriter, req *http.Request) {
 	spaces, err := spaceService.ListSpaces()
 	if err != nil {
 		res.WriteHeader(http.StatusInternalServerError)
-		json.NewEncoder(res).Encode(errors.ServiceError{Message: "Error fetching the places"})
+		json.NewEncoder(res).Encode(errors.ServiceError{Message: "Error fetching the spaces"})
+	}
+	res.WriteHeader(http.StatusOK)
+	json.NewEncoder(res).Encode(spaces)
+}
+
+// GetSpaceByID gets a particular space as specified by provided UID
+func (*controller) GetSpaceByID(res http.ResponseWriter, req *http.Request) {
+	res.Header().Set("Content-type", "application/json")
+	spaces, err := spaceService.GetSpaceByID()
+	if err != nil {
+		res.WriteHeader(http.StatusInternalServerError)
+		json.NewEncoder(res).Encode(errors.ServiceError{Message: "Error getting the requested space"})
 	}
 	res.WriteHeader(http.StatusOK)
 	json.NewEncoder(res).Encode(spaces)
