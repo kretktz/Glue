@@ -8,10 +8,11 @@ import (
 // ISpaceService implements the method ListSpaces
 type ISpaceService interface {
 	ListSpaces() ([]entity.ISpace, error)
-	GetSpaceByID() ([]entity.ISpace, error)
+	GetSpaceByID(spaceID string) ([]entity.ISpace, error)
 }
 
 var spaceRepo repository.ISpaceRepository
+var spaceID string
 
 
 //SpacesService creates a new service for ISpace
@@ -25,6 +26,6 @@ func (*service) ListSpaces() ([]entity.ISpace, error) {
 	return spaceRepo.ListSpaces()
 }
 
-func (*service) GetSpaceByID() ([]entity.ISpace, error) {
-	return spaceRepo.GetSpaceByID()
+func (*service) GetSpaceByID(spaceID string) ([]entity.ISpace, error) {
+	return spaceRepo.GetSpaceByID(spaceID)
 }

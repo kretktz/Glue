@@ -9,6 +9,7 @@ import (
 
 var (
 	spaceService service.ISpaceService
+	spaceID string
 )
 
 //ISpaceController interface to implement ListSpaces and GetSpaceByID method
@@ -38,11 +39,13 @@ func (*controller) ListSpaces(res http.ResponseWriter, req *http.Request) {
 // GetSpaceByID gets a particular space as specified by provided UID
 func (*controller) GetSpaceByID(res http.ResponseWriter, req *http.Request) {
 	res.Header().Set("Content-type", "application/json")
-	spaces, err := spaceService.GetSpaceByID()
+	spaceIDs := req.URL.Query()["spaceID"]
+	spaceID := spaceIDs[0]
+	space, err := spaceService.GetSpaceByID(string(spaceID))
 	if err != nil {
 		res.WriteHeader(http.StatusInternalServerError)
 		json.NewEncoder(res).Encode(errors.ServiceError{Message: "Error getting the requested space"})
 	}
 	res.WriteHeader(http.StatusOK)
-	json.NewEncoder(res).Encode(spaces)
+	json.NewEncoder(res).Encode(space)
 }

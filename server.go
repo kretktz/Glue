@@ -36,7 +36,7 @@ func main() {
 	httpRouter.POST("/places", placeController.AddPlace)
 
 	httpRouter.GET("/spaces", ISpaceController.ListSpaces)
-	httpRouter.GET("/spaceByID", ISpaceController.GetSpaceByID)
+	httpRouter.GET("/spaceID", ISpaceController.GetSpaceByID)
 
 	httpRouter.GET("/availableTickets", ITicketController.ListAllAvailableTickets)
 

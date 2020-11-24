@@ -11,7 +11,7 @@ type ITicketService interface {
 
 var ticketRepo repository.ITicketRepository
 
-//TicketService creates a new service for ISpace
+//TicketService creates a new service for ITicket
 func TicketService(repository repository.ITicketRepository) ITicketService {
 	ticketRepo = repository
 	return &service{}

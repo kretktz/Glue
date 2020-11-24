@@ -22,7 +22,7 @@ func NewISpaceRepository() ISpaceRepository {
 	return &repo{}
 }
 
-//NewITicketRepository creates a new repository
+//NewITicketRepository creates a new repository for ITicket functions
 func NewITicketRepository() ITicketRepository {
 	return &repo{}
 }
@@ -171,7 +171,7 @@ func (*repo) ListSpaces() ([]entity.ISpace, error) {
 	return spaces, nil
 }
 
-func (*repo) GetSpaceByID() ([]entity.ISpace, error) {
+func (*repo) GetSpaceByID(spaceID string) ([]entity.ISpace, error) {
 	ctx := context.Background()
 	client, err := firestore.NewClient(ctx, projectID)
 	if err != nil {
@@ -182,12 +182,9 @@ func (*repo) GetSpaceByID() ([]entity.ISpace, error) {
 	defer client.Close()
 
 	var (
-		spaceID string
 		space entity.ISpace
 		spaces []entity.ISpace
 	)
-	//TODO: change the hardcoded string to a user provided json
-	spaceID = "4577"
 	it := client.Collection("ISpace").Where("UID", "==", spaceID).Documents(ctx)
 	for {
 		doc, err := it.Next()
@@ -231,6 +228,8 @@ func (r *repo) ListAllAvailableTickets() ([]entity.ITicket, error) {
 			log.Fatalf("Failed to iterate: %v", err)
 			return nil, err
 		}
+
+		//TODO: iterate over space data linked to the particular ticket
 		if err := doc.DataTo(&ticket); err != nil {
 			log.Fatalf("Failed to fetch available tickets data: %v", err)
 		}
