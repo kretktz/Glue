@@ -11,8 +11,11 @@ type ISpaceService interface {
 	GetSpaceByID(spaceID string) ([]entity.ISpace, error)
 }
 
-var spaceRepo repository.ISpaceRepository
-var spaceID string
+var (
+	spaceRepo repository.ISpaceRepository
+	spaceID string
+)
+
 
 
 //SpacesService creates a new service for ISpace

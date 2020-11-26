@@ -21,12 +21,8 @@
   <component name="ChangeListManager">
     <list default="true" id="957ab00c-e873-4518-b528-d793ce7656f6" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/controller/ispace-controller.go" beforeDir="false" afterPath="$PROJECT_DIR$/controller/ispace-controller.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/repository/firestore-repo.go" beforeDir="false" afterPath="$PROJECT_DIR$/repository/firestore-repo.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/repository/ispace-repo.go" beforeDir="false" afterPath="$PROJECT_DIR$/repository/ispace-repo.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server.go" beforeDir="false" afterPath="$PROJECT_DIR$/server.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/service/ispace-service.go" beforeDir="false" afterPath="$PROJECT_DIR$/service/ispace-service.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/service/iticket-service.go" beforeDir="false" afterPath="$PROJECT_DIR$/service/iticket-service.go" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
