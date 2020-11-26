@@ -20,10 +20,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="957ab00c-e873-4518-b528-d793ce7656f6" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/service/iticket-service_test.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/controller/ispace-controller.go" beforeDir="false" afterPath="$PROJECT_DIR$/controller/ispace-controller.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/repository/firestore-repo.go" beforeDir="false" afterPath="$PROJECT_DIR$/repository/firestore-repo.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server.go" beforeDir="false" afterPath="$PROJECT_DIR$/server.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/service/ispace-service_test.go" beforeDir="false" afterPath="$PROJECT_DIR$/service/ispace-service_test.go" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -64,7 +63,7 @@
     <property name="node.js.selected.package.tslint" value="(autodetect)" />
     <property name="settings.editor.selected.configurable" value="preferences.lookFeel" />
   </component>
-  <component name="RunManager" selected="Go Test.place-service_test.go">
+  <component name="RunManager" selected="Go Test.ispace-service_test.go">
     <configuration name="ispace-service_test.go" type="GoTestRunConfiguration" factoryName="Go Test" temporary="true" nameIsGenerated="true">
       <module name="glue-backend-golang" />
       <working_directory value="$PROJECT_DIR$/service" />
@@ -87,8 +86,8 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Go Test.place-service_test.go" />
         <item itemvalue="Go Test.ispace-service_test.go" />
+        <item itemvalue="Go Test.place-service_test.go" />
       </list>
     </recent_temporary>
   </component>
@@ -109,45 +108,53 @@
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="WindowStateProjectService">
+    <state x="2092" y="100" width="1648" height="1000" key="#com.intellij.execution.junit2.states.ComparisonFailureState$DiffDialog" timestamp="1606363541369">
+      <screen x="1920" y="0" width="1920" height="1200" />
+    </state>
+    <state x="2092" y="100" width="1648" height="1000" key="#com.intellij.execution.junit2.states.ComparisonFailureState$DiffDialog/72.147.1848.1053/1920.0.1920.1200@1920.0.1920.1200" timestamp="1606363541369" />
     <state x="2588" y="402" width="645" height="403" key="#com.intellij.fileTypes.FileTypeChooser" timestamp="1603767136635">
       <screen x="1920" y="0" width="1920" height="1200" />
     </state>
     <state x="2588" y="402" width="645" height="403" key="#com.intellij.fileTypes.FileTypeChooser/72.147.1848.1053/1920.0.1920.1200@1920.0.1920.1200" timestamp="1603767136635" />
-    <state width="1802" height="324" key="GridCell.Tab.0.bottom" timestamp="1605158673184">
+    <state width="1802" height="355" key="GridCell.Tab.0.bottom" timestamp="1606364241090">
       <screen x="1920" y="0" width="1920" height="1200" />
     </state>
-    <state width="1802" height="324" key="GridCell.Tab.0.bottom/72.147.1848.1053/1920.0.1920.1200@1920.0.1920.1200" timestamp="1605158673184" />
+    <state width="1802" height="355" key="GridCell.Tab.0.bottom/72.147.1848.1053/1920.0.1920.1200@1920.0.1920.1200" timestamp="1606364241090" />
     <state width="1802" height="399" key="GridCell.Tab.0.bottom/72.147.3768.1053@72.147.3768.1053" timestamp="1604987471999" />
-    <state width="1802" height="324" key="GridCell.Tab.0.center" timestamp="1605158673184">
+    <state width="1802" height="355" key="GridCell.Tab.0.center" timestamp="1606364241089">
       <screen x="1920" y="0" width="1920" height="1200" />
     </state>
-    <state width="1802" height="324" key="GridCell.Tab.0.center/72.147.1848.1053/1920.0.1920.1200@1920.0.1920.1200" timestamp="1605158673184" />
+    <state width="1802" height="355" key="GridCell.Tab.0.center/72.147.1848.1053/1920.0.1920.1200@1920.0.1920.1200" timestamp="1606364241089" />
     <state width="1802" height="399" key="GridCell.Tab.0.center/72.147.3768.1053@72.147.3768.1053" timestamp="1604987471999" />
-    <state width="1802" height="324" key="GridCell.Tab.0.left" timestamp="1605158673184">
+    <state width="1802" height="355" key="GridCell.Tab.0.left" timestamp="1606364241089">
       <screen x="1920" y="0" width="1920" height="1200" />
     </state>
-    <state width="1802" height="324" key="GridCell.Tab.0.left/72.147.1848.1053/1920.0.1920.1200@1920.0.1920.1200" timestamp="1605158673184" />
+    <state width="1802" height="355" key="GridCell.Tab.0.left/72.147.1848.1053/1920.0.1920.1200@1920.0.1920.1200" timestamp="1606364241089" />
     <state width="1802" height="399" key="GridCell.Tab.0.left/72.147.3768.1053@72.147.3768.1053" timestamp="1604987471998" />
-    <state width="1802" height="324" key="GridCell.Tab.0.right" timestamp="1605158673184">
+    <state width="1802" height="355" key="GridCell.Tab.0.right" timestamp="1606364241089">
       <screen x="1920" y="0" width="1920" height="1200" />
     </state>
-    <state width="1802" height="324" key="GridCell.Tab.0.right/72.147.1848.1053/1920.0.1920.1200@1920.0.1920.1200" timestamp="1605158673184" />
+    <state width="1802" height="355" key="GridCell.Tab.0.right/72.147.1848.1053/1920.0.1920.1200@1920.0.1920.1200" timestamp="1606364241089" />
     <state width="1802" height="399" key="GridCell.Tab.0.right/72.147.3768.1053@72.147.3768.1053" timestamp="1604987471999" />
-    <state width="1802" height="399" key="GridCell.Tab.1.bottom" timestamp="1604987472000">
-      <screen x="72" y="147" width="3768" height="1053" />
+    <state width="1802" height="355" key="GridCell.Tab.1.bottom" timestamp="1606364240919">
+      <screen x="1920" y="0" width="1920" height="1200" />
     </state>
+    <state width="1802" height="355" key="GridCell.Tab.1.bottom/72.147.1848.1053/1920.0.1920.1200@1920.0.1920.1200" timestamp="1606364240919" />
     <state width="1802" height="399" key="GridCell.Tab.1.bottom/72.147.3768.1053@72.147.3768.1053" timestamp="1604987472000" />
-    <state width="1802" height="399" key="GridCell.Tab.1.center" timestamp="1604987472000">
-      <screen x="72" y="147" width="3768" height="1053" />
+    <state width="1802" height="355" key="GridCell.Tab.1.center" timestamp="1606364240918">
+      <screen x="1920" y="0" width="1920" height="1200" />
     </state>
+    <state width="1802" height="355" key="GridCell.Tab.1.center/72.147.1848.1053/1920.0.1920.1200@1920.0.1920.1200" timestamp="1606364240918" />
     <state width="1802" height="399" key="GridCell.Tab.1.center/72.147.3768.1053@72.147.3768.1053" timestamp="1604987472000" />
-    <state width="1802" height="399" key="GridCell.Tab.1.left" timestamp="1604987472000">
-      <screen x="72" y="147" width="3768" height="1053" />
+    <state width="1802" height="355" key="GridCell.Tab.1.left" timestamp="1606364240918">
+      <screen x="1920" y="0" width="1920" height="1200" />
     </state>
+    <state width="1802" height="355" key="GridCell.Tab.1.left/72.147.1848.1053/1920.0.1920.1200@1920.0.1920.1200" timestamp="1606364240918" />
     <state width="1802" height="399" key="GridCell.Tab.1.left/72.147.3768.1053@72.147.3768.1053" timestamp="1604987472000" />
-    <state width="1802" height="399" key="GridCell.Tab.1.right" timestamp="1604987472000">
-      <screen x="72" y="147" width="3768" height="1053" />
+    <state width="1802" height="355" key="GridCell.Tab.1.right" timestamp="1606364240919">
+      <screen x="1920" y="0" width="1920" height="1200" />
     </state>
+    <state width="1802" height="355" key="GridCell.Tab.1.right/72.147.1848.1053/1920.0.1920.1200@1920.0.1920.1200" timestamp="1606364240919" />
     <state width="1802" height="399" key="GridCell.Tab.1.right/72.147.3768.1053@72.147.3768.1053" timestamp="1604987472000" />
     <state x="2696" y="296" width="1022" height="737" key="SettingsEditor" timestamp="1604972230875">
       <screen x="1920" y="0" width="1920" height="1200" />
