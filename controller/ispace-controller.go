@@ -24,7 +24,7 @@ func NewISpaceController(service service.ISpaceService) ISpaceController {
 	return &controller{}
 }
 
-// ListSpaces lists spaces
+// ListSpaces lists all spaces
 func (*controller) ListSpaces(res http.ResponseWriter, req *http.Request) {
 	res.Header().Set("Content-type", "application/json")
 	spaces, err := spaceService.ListSpaces()

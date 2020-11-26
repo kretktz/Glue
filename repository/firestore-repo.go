@@ -2,7 +2,7 @@ package repository
 
 import (
 	"context"
-	entity "glue/glue-backend-golang/entity"
+	"glue/glue-backend-golang/entity"
 	"log"
 
 	"cloud.google.com/go/firestore"
@@ -10,17 +10,6 @@ import (
 )
 
 type repo struct{}
-
-//func CreateFirestoreClient() (*firestore.Client, error) {
-//	ctx := context.Background()
-//	client, err := firestore.NewClient(ctx, projectID)
-//	if err != nil {
-//		log.Fatalf("Failed to create a firestore client: %v", err)
-//		return nil, err
-//	}
-//	defer client.Close()
-//	return client, err
-//}
 
 
 //NewFirestoreRepository creates a new repository
@@ -41,21 +30,25 @@ func NewITicketRepository() ITicketRepository {
 
 const (
 	projectID      string = "glue-25e3b"
-	collectionName string = "Place"
 )
 
-func (*repo) Save(place *entity.Place) (*entity.Place, error) {
-	ctx := context.Background()
-	client, err := firestore.NewClient(ctx, projectID)
+
+func NewFirestoreClient() (*firestore.Client, context.Context){
+	contx := context.Background()
+	client, err := firestore.NewClient(contx, projectID)
 	if err != nil {
 		log.Fatalf("Failed to create a firestore client: %v", err)
-		return nil, err
 	}
+	return client, contx
+}
 
+func (*repo) Save(place *entity.Place) (*entity.Place, error) {
+
+	client, ctx := NewFirestoreClient()
 	defer client.Close()
 
 	//TODO: Wrap data into json unmarshal func
-	_, _, err = client.Collection(collectionName).Add(ctx, map[string]interface{}{
+	_, _, err := client.Collection("Place").Add(ctx, map[string]interface{}{
 		"PlaceName":     place.PlaceName,
 		"PlaceLocation": place.PlaceLocation,
 		"PhoneNumber":   place.PhoneNumber,
@@ -68,17 +61,12 @@ func (*repo) Save(place *entity.Place) (*entity.Place, error) {
 }
 
 func (*repo) FindAll() ([]entity.Place, error) {
-	ctx := context.Background()
-	client, err := firestore.NewClient(ctx, projectID)
-	if err != nil {
-		log.Fatalf("Failed to create a firestore client: %v", err)
-		return nil, err
-	}
 
+	client, ctx := NewFirestoreClient()
 	defer client.Close()
 
 	var places []entity.Place
-	it := client.Collection(collectionName).Documents(ctx)
+	it := client.Collection("Place").Documents(ctx)
 	for {
 		doc, err := it.Next()
 		if err == iterator.Done {
@@ -125,13 +113,8 @@ func (*repo) FindAll() ([]entity.Place, error) {
 }
 
 func (*repo) ListSpaces() ([]entity.ISpace, error) {
-	ctx := context.Background()
-	client, err := firestore.NewClient(ctx, projectID)
-	if err != nil {
-		log.Fatalf("Failed to create a firestore client: %v", err)
-		return nil, err
-	}
 
+	client, ctx:= NewFirestoreClient()
 	defer client.Close()
 
 	var (
@@ -181,13 +164,8 @@ func (*repo) ListSpaces() ([]entity.ISpace, error) {
 }
 
 func (*repo) GetSpaceByID(spaceID string) ([]entity.ISpace, error) {
-	ctx := context.Background()
-	client, err := firestore.NewClient(ctx, projectID)
-	if err != nil {
-		log.Fatalf("Failed to create a firestore client: %v", err)
-		return nil, err
-	}
 
+	client, ctx := NewFirestoreClient()
 	defer client.Close()
 
 	var (
@@ -235,13 +213,8 @@ func (*repo) GetSpaceByID(spaceID string) ([]entity.ISpace, error) {
 }
 
 func (r *repo) ListAllAvailableTickets() ([]entity.ITicket, error) {
-	ctx := context.Background()
-	client, err := firestore.NewClient(ctx, projectID)
-	if err != nil {
-		log.Fatalf("Failed to create a firestore client: %v", err)
-		return nil, err
-	}
 
+	client, ctx := NewFirestoreClient()
 	defer client.Close()
 
 	var (

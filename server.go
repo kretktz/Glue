@@ -32,13 +32,18 @@ func main() {
 	httpRouter.GET("/", func(w http.ResponseWriter, req *http.Request) {
 		fmt.Fprintln(w, "Up and running...")
 	})
+
+	//Places routes
 	httpRouter.GET("/places", placeController.GetPlaces)
 	httpRouter.POST("/places", placeController.AddPlace)
 
+	//ISpace routes
 	httpRouter.GET("/spaces", ISpaceController.ListSpaces)
 	httpRouter.GET("/spaceID", ISpaceController.GetSpaceByID)
 
+	//ITicket routes
 	httpRouter.GET("/availableTickets", ITicketController.ListAllAvailableTickets)
+
 
 	httpRouter.SERVE(port)
 
