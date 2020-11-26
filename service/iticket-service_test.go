@@ -21,13 +21,19 @@ func (mock *MockITicket) ListAllAvailableTickets() ([]entity.ITicket, error) {
 func TestService_ListAllAvailableTickets(t *testing.T) {
 	mockRepo := new(MockITicket)
 
+	var(
+		availability int64 = 34
+		period       int64 = 2
+		price        int64 = 500
+	)
+
 	ticket := entity.ITicket{
-		Availability: 34,
+		Availability: availability,
 		Colour:       "blue",
 		Description:  "cheap",
 		Name:         "cheap tick",
-		Period:       2,
-		Price:        500,
+		Period:       period,
+		Price:        price,
 		SpaceID:      "007",
 		Space: []entity.ISpace{
 			{
@@ -63,17 +69,17 @@ func TestService_ListAllAvailableTickets(t *testing.T) {
 	mockRepo.AssertExpectations(t)
 
 	//Data Assertion
-	assert.Equal(t, 34, result[0].Availability)
+	assert.Equal(t, availability, result[0].Availability)
 	assert.Equal(t, "blue", result[0].Colour)
 	assert.Equal(t, "cheap", result[0].Description)
 	assert.Equal(t, "cheap tick", result[0].Name)
-	assert.Equal(t, 2, result[0].Period)
-	assert.Equal(t, 500, result[0].Price)
+	assert.Equal(t, period, result[0].Period)
+	assert.Equal(t, price, result[0].Price)
 	assert.Equal(t, "007", result[0].SpaceID)
 	assert.Equal(t, []entity.ISpace{
 		{
 			Address:                "address",
-			Availability:           "available",
+			Availability:           "availability",
 			Coordinates:            "coordinates",
 			Description:            "description",
 			ImageURLS:              "image urls",
