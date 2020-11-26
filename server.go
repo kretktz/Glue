@@ -40,6 +40,7 @@ func main() {
 	//ISpace routes
 	httpRouter.GET("/spaces", ISpaceController.ListSpaces)
 	httpRouter.GET("/spaceID", ISpaceController.GetSpaceByID)
+	httpRouter.POST("/newSpace", ISpaceController.CreateNewSpace)
 
 	//ITicket routes
 	httpRouter.GET("/availableTickets", ITicketController.ListAllAvailableTickets)

@@ -2,6 +2,7 @@ package controller
 
 import (
 	"encoding/json"
+	"glue/glue-backend-golang/entity"
 	"glue/glue-backend-golang/errors"
 	"glue/glue-backend-golang/service"
 	"net/http"
@@ -16,6 +17,7 @@ var (
 type ISpaceController interface {
 	ListSpaces(res http.ResponseWriter, req *http.Request)
 	GetSpaceByID(res http.ResponseWriter, req *http.Request)
+	CreateNewSpace(res http.ResponseWriter, req *http.Request)
 }
 
 //NewISpaceController returns controller
@@ -48,4 +50,31 @@ func (*controller) GetSpaceByID(res http.ResponseWriter, req *http.Request) {
 	}
 	res.WriteHeader(http.StatusOK)
 	json.NewEncoder(res).Encode(space)
+}
+
+// CreatNewSpace adds a new space
+func (*controller) CreateNewSpace(res http.ResponseWriter, req *http.Request) {
+	res.Header().Set("Content-type", "application/json")
+	var space entity.ISpace
+	err := json.NewDecoder(req.Body).Decode(&space)
+	if err != nil {
+		res.WriteHeader(http.StatusInternalServerError)
+		json.NewEncoder(res).Encode(errors.ServiceError{Message: "Error unmarshalling data"})
+		return
+	}
+	err1 := spaceService.ValidateSpace(&space)
+	if err1 != nil {
+		res.WriteHeader(http.StatusInternalServerError)
+		json.NewEncoder(res).Encode(errors.ServiceError{Message: err1.Error()})
+		return
+	}
+	result, err2 := spaceService.CreateSpace(&space)
+	if err2 != nil {
+		res.WriteHeader(http.StatusInternalServerError)
+		json.NewEncoder(res).Encode(errors.ServiceError{Message: "Error saving the space"})
+		return
+	}
+	res.WriteHeader(http.StatusOK)
+	json.NewEncoder(res).Encode(result)
+
 }

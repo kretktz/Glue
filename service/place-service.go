@@ -27,7 +27,7 @@ func NewPlaceService(repository repository.PlaceRepository) PlaceService {
 
 func (*service) Validate(place *entity.Place) error {
 	if place == nil {
-		err := errors.New("The place is not specified")
+		err := errors.New("the place is not specified")
 		return err
 	}
 	return nil

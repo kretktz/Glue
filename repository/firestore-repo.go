@@ -11,7 +11,6 @@ import (
 
 type repo struct{}
 
-
 //NewFirestoreRepository creates a new repository
 func NewFirestoreRepository() PlaceRepository {
 	return &repo{}
@@ -42,6 +41,7 @@ func NewFirestoreClient() (*firestore.Client, context.Context){
 	return client, contx
 }
 
+//Places
 func (*repo) Save(place *entity.Place) (*entity.Place, error) {
 
 	client, ctx := NewFirestoreClient()
@@ -112,6 +112,7 @@ func (*repo) FindAll() ([]entity.Place, error) {
 
 }
 
+//Spaces
 func (*repo) ListSpaces() ([]entity.ISpace, error) {
 
 	client, ctx:= NewFirestoreClient()
@@ -212,6 +213,69 @@ func (*repo) GetSpaceByID(spaceID string) ([]entity.ISpace, error) {
 	return spaces, nil
 }
 
+func (*repo) CreateNewSpace(space *entity.ISpace) (*entity.ISpace, error){
+	client, ctx := NewFirestoreClient()
+	defer client.Close()
+
+	doc, wr, err := client.Collection("ISpace").Add(ctx, entity.ISpace{
+		Address:                space.Address,
+		Availability:           space.Availability,
+		Coordinates:            space.Coordinates,
+		Description:            space.Description,
+		ImageURLS:              space.ImageURLS,
+		Location:               space.Location,
+		Name:                   space.Name,
+		NumberOfVisitors:       space.NumberOfVisitors,
+		TelephoneNumber:        space.TelephoneNumber,
+		Tickets:                space.Tickets,
+		TopImageURL:            space.TopImageURL,
+		UID:                    space.UID,
+		VisitorGreeting:        space.VisitorGreeting,
+		VisitorSlackMessage:    space.VisitorSlackMessage,
+		VisitorSlackWebhookURL: space.VisitorSlackWebhookURL,
+		Website:                space.Website,
+	})
+	doc.Snapshots(ctx)
+	log.Printf("Data added: %v and %v", wr, doc)
+	if err != nil {
+		log.Fatalf("Failed to add a new space: %v", err)
+		return nil, err
+	}
+	return space, nil
+}
+
+func (*repo) SaveSpace(space *entity.ISpace) (*entity.ISpace, error){
+	client, ctx := NewFirestoreClient()
+	defer client.Close()
+
+	doc, wr, err := client.Collection("ISpace").Add(ctx, entity.ISpace{
+		Address:                space.Address,
+		Availability:           space.Availability,
+		Coordinates:            space.Coordinates,
+		Description:            space.Description,
+		ImageURLS:              space.ImageURLS,
+		Location:               space.Location,
+		Name:                   space.Name,
+		NumberOfVisitors:       space.NumberOfVisitors,
+		TelephoneNumber:        space.TelephoneNumber,
+		Tickets:                space.Tickets,
+		TopImageURL:            space.TopImageURL,
+		UID:                    space.UID,
+		VisitorGreeting:        space.VisitorGreeting,
+		VisitorSlackMessage:    space.VisitorSlackMessage,
+		VisitorSlackWebhookURL: space.VisitorSlackWebhookURL,
+		Website:                space.Website,
+	})
+	doc.Snapshots(ctx)
+	log.Printf("Data added: %v and %v", wr, doc)
+	if err != nil {
+		log.Fatalf("Failed to add a new space: %v", err)
+		return nil, err
+	}
+	return space, nil
+}
+
+//Tickets
 func (r *repo) ListAllAvailableTickets() ([]entity.ITicket, error) {
 
 	client, ctx := NewFirestoreClient()

@@ -8,4 +8,6 @@ import (
 type ISpaceRepository interface {
 	ListSpaces() ([]entity.ISpace, error)
 	GetSpaceByID(spaceID string) ([]entity.ISpace, error)
+	SaveSpace(space *entity.ISpace) (*entity.ISpace, error)
+	CreateNewSpace(space *entity.ISpace) (*entity.ISpace, error)
 }
