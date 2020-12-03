@@ -38,12 +38,13 @@ func main() {
 	httpRouter.POST("/places", placeController.AddPlace)
 
 	//ISpace routes
-	httpRouter.GET("/spaces", ISpaceController.ListSpaces)
+	httpRouter.GET("/spaces", ISpaceController.ListSpacesPostgre)
 	httpRouter.GET("/spaceID", ISpaceController.GetSpaceByID)
 	httpRouter.POST("/newSpace", ISpaceController.CreateNewSpace)
 
 	//ITicket routes
 	httpRouter.GET("/availableTickets", ITicketController.ListAllAvailableTickets)
+
 
 
 	httpRouter.SERVE(port)

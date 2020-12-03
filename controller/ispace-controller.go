@@ -18,6 +18,8 @@ type ISpaceController interface {
 	ListSpaces(res http.ResponseWriter, req *http.Request)
 	GetSpaceByID(res http.ResponseWriter, req *http.Request)
 	CreateNewSpace(res http.ResponseWriter, req *http.Request)
+
+	ListSpacesPostgre(res http.ResponseWriter, req *http.Request)
 }
 
 //NewISpaceController returns controller
@@ -30,6 +32,17 @@ func NewISpaceController(service service.ISpaceService) ISpaceController {
 func (*controller) ListSpaces(res http.ResponseWriter, req *http.Request) {
 	res.Header().Set("Content-type", "application/json")
 	spaces, err := spaceService.ListSpaces()
+	if err != nil {
+		res.WriteHeader(http.StatusInternalServerError)
+		json.NewEncoder(res).Encode(errors.ServiceError{Message: "Error fetching the spaces"})
+	}
+	res.WriteHeader(http.StatusOK)
+	json.NewEncoder(res).Encode(spaces)
+}
+
+func (*controller) ListSpacesPostgre(res http.ResponseWriter, req *http.Request) {
+	res.Header().Set("Content-type", "application/json")
+	spaces, err := spaceService.ListSpacesPostgre()
 	if err != nil {
 		res.WriteHeader(http.StatusInternalServerError)
 		json.NewEncoder(res).Encode(errors.ServiceError{Message: "Error fetching the spaces"})

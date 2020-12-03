@@ -22,13 +22,10 @@
     <list default="true" id="957ab00c-e873-4518-b528-d793ce7656f6" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/controller/ispace-controller.go" beforeDir="false" afterPath="$PROJECT_DIR$/controller/ispace-controller.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/entity/ispace.go" beforeDir="false" afterPath="$PROJECT_DIR$/entity/ispace.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/repository/firestore-repo.go" beforeDir="false" afterPath="$PROJECT_DIR$/repository/firestore-repo.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/repository/ispace-repo.go" beforeDir="false" afterPath="$PROJECT_DIR$/repository/ispace-repo.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/repository/places-repo.go" beforeDir="false" afterPath="$PROJECT_DIR$/repository/places-repo.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/repository/mysql-repo.go" beforeDir="false" afterPath="$PROJECT_DIR$/repository/postgresql-repo.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/server.go" beforeDir="false" afterPath="$PROJECT_DIR$/server.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/service/ispace-service.go" beforeDir="false" afterPath="$PROJECT_DIR$/service/ispace-service.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/service/place-service.go" beforeDir="false" afterPath="$PROJECT_DIR$/service/place-service.go" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -174,5 +171,16 @@
       <screen x="1920" y="0" width="1920" height="1200" />
     </state>
     <state x="2579" y="269" width="672" height="678" key="search.everywhere.popup/72.147.1848.1053/1920.0.1920.1200@1920.0.1920.1200" timestamp="1604971318265" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="DlvLineBreakpoint">
+          <url>file://$PROJECT_DIR$/controller/ispace-controller.go</url>
+          <line>25</line>
+          <option name="timeStamp" value="1" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
 </project>
