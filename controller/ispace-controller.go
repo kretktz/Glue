@@ -19,7 +19,8 @@ type ISpaceController interface {
 	GetSpaceByID(res http.ResponseWriter, req *http.Request)
 	CreateNewSpace(res http.ResponseWriter, req *http.Request)
 
-	ListSpacesPostgre(res http.ResponseWriter, req *http.Request)
+	ListSpacesPsql(res http.ResponseWriter, req *http.Request)
+	CreateNewSpacePsql(res http.ResponseWriter, req *http.Request)
 }
 
 //NewISpaceController returns controller
@@ -40,9 +41,9 @@ func (*controller) ListSpaces(res http.ResponseWriter, req *http.Request) {
 	json.NewEncoder(res).Encode(spaces)
 }
 
-func (*controller) ListSpacesPostgre(res http.ResponseWriter, req *http.Request) {
+func (*controller) ListSpacesPsql(res http.ResponseWriter, req *http.Request) {
 	res.Header().Set("Content-type", "application/json")
-	spaces, err := spaceService.ListSpacesPostgre()
+	spaces, err := spaceService.ListSpacesPsql()
 	if err != nil {
 		res.WriteHeader(http.StatusInternalServerError)
 		json.NewEncoder(res).Encode(errors.ServiceError{Message: "Error fetching the spaces"})
@@ -90,4 +91,29 @@ func (*controller) CreateNewSpace(res http.ResponseWriter, req *http.Request) {
 	res.WriteHeader(http.StatusOK)
 	json.NewEncoder(res).Encode(result)
 
+}
+
+func (*controller) CreateNewSpacePsql(res http.ResponseWriter, req *http.Request) {
+	res.Header().Set("Content-type", "application/json")
+	var space entity.ISpace
+	err := json.NewDecoder(req.Body).Decode(&space)
+	if err != nil {
+		res.WriteHeader(http.StatusInternalServerError)
+		json.NewEncoder(res).Encode(errors.ServiceError{Message: "Error unmarshalling data"})
+		return
+	}
+	err1 := spaceService.ValidateSpace(&space)
+	if err1 != nil {
+		res.WriteHeader(http.StatusInternalServerError)
+		json.NewEncoder(res).Encode(errors.ServiceError{Message: err1.Error()})
+		return
+	}
+	result, err2 := spaceService.CreateNewSpacePsql(&space)
+	if err2 != nil {
+		res.WriteHeader(http.StatusInternalServerError)
+		json.NewEncoder(res).Encode(errors.ServiceError{Message: "Error saving the space"})
+		return
+	}
+	res.WriteHeader(http.StatusOK)
+	json.NewEncoder(res).Encode(result)
 }

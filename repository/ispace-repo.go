@@ -12,7 +12,8 @@ type (
 		SaveSpace(space *entity.ISpace) (*entity.ISpace, error)
 		CreateNewSpace(space *entity.ISpace) (*entity.ISpace, error)
 
-		ListSpacesPostgre() ([]entity.ISpace, error)
+		ListSpacesPsql() ([]entity.ISpace, error)
+		CreateNewSpacePsql(space *entity.ISpace) (*entity.ISpace, error)
 	}
 )
 

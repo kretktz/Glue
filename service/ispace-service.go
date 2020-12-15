@@ -14,7 +14,8 @@ type (
 		CreateSpace(space *entity.ISpace) (*entity.ISpace, error)
 		ValidateSpace(e *entity.ISpace) error
 
-		ListSpacesPostgre() ([]entity.ISpace, error)
+		ListSpacesPsql() ([]entity.ISpace, error)
+		CreateNewSpacePsql(space *entity.ISpace) (*entity.ISpace, error)
 	}
 )
 
@@ -55,6 +56,10 @@ func (*service) CreateNewSpace(space *entity.ISpace) (*entity.ISpace, error){
 	return spaceRepo.CreateNewSpace(space)
 }
 
-func (*service) ListSpacesPostgre() ([]entity.ISpace, error) {
-	return spaceRepo.ListSpacesPostgre()
+func (*service) ListSpacesPsql() ([]entity.ISpace, error) {
+	return spaceRepo.ListSpacesPsql()
+}
+
+func (*service) CreateNewSpacePsql(space *entity.ISpace) (*entity.ISpace, error) {
+	return spaceRepo.CreateNewSpacePsql(space)
 }
