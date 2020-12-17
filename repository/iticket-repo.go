@@ -6,4 +6,6 @@ import (
 
 type ITicketRepository interface {
 	ListAllAvailableTickets() ([]entity.ITicket, error)
+
+	CreateNewTicketPsql(ticket *entity.ITicket) (*entity.ITicket, error)
 }

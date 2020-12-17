@@ -40,10 +40,12 @@ func main() {
 	//ISpace routes
 	httpRouter.GET("/spaces", ISpaceController.ListSpacesPsql)
 	httpRouter.GET("/spaceID", ISpaceController.GetSpaceByIDPsql)
+	httpRouter.GET("/spacestickets", ISpaceController.ListSpacesWithTicketsPsql)
 	httpRouter.POST("/newSpace", ISpaceController.CreateNewSpacePsql)
 
 	//ITicket routes
 	httpRouter.GET("/availableTickets", ITicketController.ListAllAvailableTickets)
+	httpRouter.POST("/newTicket", ITicketController.CreateNewTicketPsql)
 
 
 

@@ -22,6 +22,8 @@ type ISpaceController interface {
 	ListSpacesPsql(res http.ResponseWriter, req *http.Request)
 	CreateNewSpacePsql(res http.ResponseWriter, req *http.Request)
 	GetSpaceByIDPsql(res http.ResponseWriter, req *http.Request)
+	ListSpacesWithTicketsPsql(res http.ResponseWriter, req *http.Request)
+
 }
 
 //NewISpaceController returns controller
@@ -51,6 +53,18 @@ func (*controller) ListSpacesPsql(res http.ResponseWriter, req *http.Request) {
 	}
 	res.WriteHeader(http.StatusOK)
 	json.NewEncoder(res).Encode(spaces)
+}
+
+func (*controller) ListSpacesWithTicketsPsql(res http.ResponseWriter, req *http.Request) {
+	res.Header().Set("Content-type", "application/json")
+	spaces, tickets, err := spaceService.ListSpacesWithTicketsPsql()
+	if err != nil {
+		res.WriteHeader(http.StatusInternalServerError)
+		json.NewEncoder(res).Encode(errors.ServiceError{Message: "Error fetching the spaces"})
+	}
+	res.WriteHeader(http.StatusOK)
+	json.NewEncoder(res).Encode(spaces)
+	json.NewEncoder(res).Encode(tickets)
 }
 
 // GetSpaceByID gets a particular space as specified by provided UID

@@ -89,6 +89,48 @@ func (*repo) ListSpacesPsql() ([]entity.ISpace, error){
 	return spaces, nil
 }
 
+//TODO: Fix the SQL error "pq: invalid reference to FROM-clause entry for table"
+func (*repo) ListSpacesWithTicketsPsql() ([]entity.ISpace, []entity.ITicket, error){
+	db := PsqlConnect()
+
+	defer db.Close()
+
+	var spaces []entity.ISpace
+	//var tickets []entity.ITicket
+
+	query := "SELECT public.ispace.name, public.ispace.uid, public.iticket.space_id, public.iticket.name, public.iticket.price \nFROM public.ispace s\nJOIN public.iticket t ON s.uid = t.space_id\nWHERE s.uid = $1"
+
+	rows, err := db.Query(query)
+	if err != nil {
+		log.Fatalf("Error executing a query: %v", err)
+	}
+
+	defer rows.Close()
+
+	space := &entity.ISpace{}
+
+	for rows.Next() {
+		ticket := entity.ITicket{}
+		err = rows.Scan(
+			&space.Name,
+			&space.UID,
+			&ticket.SpaceID,
+			&ticket.Name,
+			&ticket.Price,
+		)
+		if err != nil {
+			panic(err)
+		}
+		space.Tickets = append(space.Tickets, ticket)
+	}
+	err = rows.Err()
+	if err != nil {
+		panic(err)
+	}
+
+	return spaces, space.Tickets, nil
+}
+
 func (*repo) CreateNewSpacePsql(space *entity.ISpace) (*entity.ISpace, error) {
 	db := PsqlConnect()
 	defer db.Close()
@@ -133,6 +175,7 @@ func (*repo) GetSpaceByIDPsql(spaceID string) (entity.ISpace, error) {
 			&space.Name,
 			&space.NumberOfVisitors,
 			&space.TelephoneNumber,
+			&space.Tickets,
 			&space.TopImageURL,
 			&space.UID,
 			&space.VisitorGreeting,
@@ -150,4 +193,23 @@ func (*repo) GetSpaceByIDPsql(spaceID string) (entity.ISpace, error) {
 	}
 
 	return space, nil
+}
+
+func (*repo) CreateNewTicketPsql(ticket *entity.ITicket) (*entity.ITicket, error) {
+	db := PsqlConnect()
+	defer db.Close()
+
+
+	sqlStatement := `
+		INSERT INTO public.iticket (availability, colour, description, name, period, price, space_id, uid)
+		VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
+		RETURNING uid`
+	id := 0
+	err := db.QueryRow(sqlStatement, ticket.Availability, ticket.Colour, ticket.Description, ticket.Name, ticket.Period, ticket.Price, ticket.SpaceID, ticket.UID).Scan(&id)
+	if err != nil {
+		log.Fatalf("Failed to add a new ticket: %v", err)
+		return nil, err
+	}
+
+	return ticket, nil
 }

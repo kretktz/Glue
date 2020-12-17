@@ -8,7 +8,7 @@ type ITicket struct {
 	Name         string   `json:"name"`
 	Period       int64    `json:"period"`
 	Price        int64    `json:"price"`
-	SpaceID      string   `json:"space_ID"`
+	SpaceID      string   `json:"space_id"`
 	Space        []ISpace `json:"space,omitempty"`
 	UID          string   `json:"uid"`
 }
