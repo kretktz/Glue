@@ -108,3 +108,46 @@ func (*repo) CreateNewSpacePsql(space *entity.ISpace) (*entity.ISpace, error) {
 	return space, nil
 
 }
+
+func (*repo) GetSpaceByIDPsql(spaceID string) (entity.ISpace, error) {
+	db := PsqlConnect()
+
+	defer db.Close()
+
+	var space entity.ISpace
+
+	rows, err := db.Query("SELECT * FROM public.ispace WHERE uid = $1", spaceID)
+	if err != nil {
+		log.Fatalf("Couldn't fetch the space: %v", err)
+		return space, err
+	}
+	defer rows.Close()
+	for rows.Next(){
+		err = rows.Scan(
+			&space.Address,
+			&space.Availability,
+			&space.Coordinates,
+			&space.Description,
+			&space.ImageURLS,
+			&space.Location,
+			&space.Name,
+			&space.NumberOfVisitors,
+			&space.TelephoneNumber,
+			&space.TopImageURL,
+			&space.UID,
+			&space.VisitorGreeting,
+			&space.VisitorSlackMessage,
+			&space.VisitorSlackWebhookURL,
+			&space.Website,
+		)
+		if err != nil {
+			log.Fatalf("Could not fetch the Space details: %v", err)
+		}
+	}
+	err = rows.Err()
+	if err != nil {
+		log.Fatalf("Error GetSpacebyIDPsql: %v", err)
+	}
+
+	return space, nil
+}

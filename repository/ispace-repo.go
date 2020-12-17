@@ -5,7 +5,7 @@ import (
 )
 
 type (
-	// ISpaceRepository implements the method ListSpaces and GetSpaceByID
+	// ISpaceRepository implements the methods concerning spaces
 	ISpaceRepository interface {
 		ListSpaces() ([]entity.ISpace, error)
 		GetSpaceByID(spaceID string) ([]entity.ISpace, error)
@@ -14,6 +14,7 @@ type (
 
 		ListSpacesPsql() ([]entity.ISpace, error)
 		CreateNewSpacePsql(space *entity.ISpace) (*entity.ISpace, error)
+		GetSpaceByIDPsql(spaceID string) (entity.ISpace, error)
 	}
 )
 

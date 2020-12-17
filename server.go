@@ -39,7 +39,7 @@ func main() {
 
 	//ISpace routes
 	httpRouter.GET("/spaces", ISpaceController.ListSpacesPsql)
-	httpRouter.GET("/spaceID", ISpaceController.GetSpaceByID)
+	httpRouter.GET("/spaceID", ISpaceController.GetSpaceByIDPsql)
 	httpRouter.POST("/newSpace", ISpaceController.CreateNewSpacePsql)
 
 	//ITicket routes

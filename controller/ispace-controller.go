@@ -21,6 +21,7 @@ type ISpaceController interface {
 
 	ListSpacesPsql(res http.ResponseWriter, req *http.Request)
 	CreateNewSpacePsql(res http.ResponseWriter, req *http.Request)
+	GetSpaceByIDPsql(res http.ResponseWriter, req *http.Request)
 }
 
 //NewISpaceController returns controller
@@ -58,6 +59,19 @@ func (*controller) GetSpaceByID(res http.ResponseWriter, req *http.Request) {
 	spaceIDs := req.URL.Query()["spaceID"]
 	spaceID := spaceIDs[0]
 	space, err := spaceService.GetSpaceByID(string(spaceID))
+	if err != nil {
+		res.WriteHeader(http.StatusInternalServerError)
+		json.NewEncoder(res).Encode(errors.ServiceError{Message: "Error getting the requested space"})
+	}
+	res.WriteHeader(http.StatusOK)
+	json.NewEncoder(res).Encode(space)
+}
+
+func (*controller) GetSpaceByIDPsql(res http.ResponseWriter, req *http.Request) {
+	res.Header().Set("Content-type", "application/json")
+	spaceIDs := req.URL.Query()["spaceID"]
+	spaceID := spaceIDs[0]
+	space, err := spaceService.GetSpaceByIDPsql(string(spaceID))
 	if err != nil {
 		res.WriteHeader(http.StatusInternalServerError)
 		json.NewEncoder(res).Encode(errors.ServiceError{Message: "Error getting the requested space"})

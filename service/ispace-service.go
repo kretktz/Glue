@@ -16,6 +16,7 @@ type (
 
 		ListSpacesPsql() ([]entity.ISpace, error)
 		CreateNewSpacePsql(space *entity.ISpace) (*entity.ISpace, error)
+		GetSpaceByIDPsql(spaceID string) (entity.ISpace, error)
 	}
 )
 
@@ -62,4 +63,8 @@ func (*service) ListSpacesPsql() ([]entity.ISpace, error) {
 
 func (*service) CreateNewSpacePsql(space *entity.ISpace) (*entity.ISpace, error) {
 	return spaceRepo.CreateNewSpacePsql(space)
+}
+
+func (*service) GetSpaceByIDPsql(spaceID string) (entity.ISpace, error) {
+	return spaceRepo.GetSpaceByIDPsql(spaceID)
 }
