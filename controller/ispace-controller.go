@@ -58,14 +58,13 @@ func (*controller) PsqlListSpaces(res http.ResponseWriter, req *http.Request) {
 // PsqlListSpacesWithTickets lists all spaces with embedded list of tickets from PostgreSQL DB
 func (*controller) PsqlListSpacesWithTickets(res http.ResponseWriter, req *http.Request) {
 	res.Header().Set("Content-type", "application/json")
-	spaces, tickets, err := spaceService.PsqlListSpacesWithTickets()
+	spaces, err := spaceService.PsqlListSpacesWithTickets()
 	if err != nil {
 		res.WriteHeader(http.StatusInternalServerError)
 		json.NewEncoder(res).Encode(errors.ServiceError{Message: "Error fetching the spaces"})
 	}
 	res.WriteHeader(http.StatusOK)
 	json.NewEncoder(res).Encode(spaces)
-	json.NewEncoder(res).Encode(tickets)
 }
 
 // FireStoreGetSpaceByID gets a particular space as specified by provided UID

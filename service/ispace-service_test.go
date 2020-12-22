@@ -32,7 +32,7 @@ func (mock *MockISpace) PsqlGetSpaceByID(spaceID string) (entity.ISpace, error) 
 	panic("implement me")
 }
 
-func (mock *MockISpace) PsqlListSpacesWithTickets() ([]entity.ISpace, []entity.ITicket, error) {
+func (mock *MockISpace) PsqlListSpacesWithTickets() ([]entity.ISpace, error) {
 	panic("implement me")
 }
 

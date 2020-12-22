@@ -17,7 +17,7 @@ type (
 		PsqlListSpaces() ([]entity.ISpace, error)
 		PsqlCreateNewSpace(space *entity.ISpace) (*entity.ISpace, error)
 		PsqlGetSpaceByID(spaceID string) (entity.ISpace, error)
-		PsqlListSpacesWithTickets() ([]entity.ISpace, []entity.ITicket, error)
+		PsqlListSpacesWithTickets() ([]entity.ISpace, error)
 	}
 )
 

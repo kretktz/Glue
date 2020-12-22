@@ -93,7 +93,7 @@ func (*repo) PsqlListSpaces() ([]entity.ISpace, error){
 }
 
 // PsqlListSpacesWithTickets returns a list of spaces with corresponding tickets
-func (*repo) PsqlListSpacesWithTickets() ([]entity.ISpace, []entity.ITicket, error){
+func (*repo) PsqlListSpacesWithTickets() ([]entity.ISpace, error){
 	// connecting to the DB
 	db := PsqlConnect()
 	// keeping the connection open
@@ -111,9 +111,10 @@ func (*repo) PsqlListSpacesWithTickets() ([]entity.ISpace, []entity.ITicket, err
 	defer rows.Close()
 
 	space := entity.ISpace{}
+	ticket := entity.ITicket{}
 
 	for rows.Next() {
-		ticket := entity.ITicket{}
+
 		err = rows.Scan(
 			&space.Address,
 			&space.Availability,
@@ -143,16 +144,18 @@ func (*repo) PsqlListSpacesWithTickets() ([]entity.ISpace, []entity.ITicket, err
 			log.Fatalf("Error scanning rows in ITicket: %v", err)
 		}
 		space.Tickets = append(space.Tickets, ticket)
+		spaces = append(spaces, space)
 	}
 
-	spaces = append(spaces, space)
 
 	err = rows.Err()
 	if err != nil {
 		log.Fatalf("Error in the for loop: %v", err)
 	}
 
-	return spaces, space.Tickets, nil
+
+
+	return spaces, nil
 }
 
 // PsqlCreateNewSpace writes a new ISpace record to the PostgreSQL DB
