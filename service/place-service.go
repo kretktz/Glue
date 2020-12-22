@@ -6,7 +6,7 @@ import (
 	"glue/glue-backend-golang/repository"
 )
 
-// PlaceService implements the methods Validate, Create and FindAll
+// PlaceService implements the methods concerning places
 type PlaceService interface {
 	FireStoreValidate(place *entity.Place) error
 	FireStoreCreate(place *entity.Place) (*entity.Place, error)

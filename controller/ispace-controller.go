@@ -23,7 +23,6 @@ type ISpaceController interface {
 	PsqlCreateNewSpace(res http.ResponseWriter, req *http.Request)
 	PsqlGetSpaceByID(res http.ResponseWriter, req *http.Request)
 	PsqlListSpacesWithTickets(res http.ResponseWriter, req *http.Request)
-
 }
 
 //NewISpaceController returns controller
@@ -32,7 +31,7 @@ func NewISpaceController(service service.ISpaceService) ISpaceController {
 	return &controller{}
 }
 
-// ListSpaces lists all spaces
+// FirestoreListSpaces lists all spaces with embedded list of tickets from Firestore DB
 func (*controller) FireStoreListSpaces(res http.ResponseWriter, req *http.Request) {
 	res.Header().Set("Content-type", "application/json")
 	spaces, err := spaceService.FireStoreListSpaces()
@@ -44,6 +43,7 @@ func (*controller) FireStoreListSpaces(res http.ResponseWriter, req *http.Reques
 	json.NewEncoder(res).Encode(spaces)
 }
 
+// PsqlListSpaces lists all spaces from PostgreSQL DB
 func (*controller) PsqlListSpaces(res http.ResponseWriter, req *http.Request) {
 	res.Header().Set("Content-type", "application/json")
 	spaces, err := spaceService.PsqlListSpaces()
@@ -55,6 +55,7 @@ func (*controller) PsqlListSpaces(res http.ResponseWriter, req *http.Request) {
 	json.NewEncoder(res).Encode(spaces)
 }
 
+// PsqlListSpacesWithTickets lists all spaces with embedded list of tickets from PostgreSQL DB
 func (*controller) PsqlListSpacesWithTickets(res http.ResponseWriter, req *http.Request) {
 	res.Header().Set("Content-type", "application/json")
 	spaces, tickets, err := spaceService.PsqlListSpacesWithTickets()
@@ -67,7 +68,7 @@ func (*controller) PsqlListSpacesWithTickets(res http.ResponseWriter, req *http.
 	json.NewEncoder(res).Encode(tickets)
 }
 
-// GetSpaceByID gets a particular space as specified by provided UID
+// FireStoreGetSpaceByID gets a particular space as specified by provided UID
 func (*controller) FireStoreGetSpaceByID(res http.ResponseWriter, req *http.Request) {
 	res.Header().Set("Content-type", "application/json")
 	spaceIDs := req.URL.Query()["spaceID"]
@@ -81,6 +82,7 @@ func (*controller) FireStoreGetSpaceByID(res http.ResponseWriter, req *http.Requ
 	json.NewEncoder(res).Encode(space)
 }
 
+// PsqlGetSpaceByID gets a particular space as specified by provided UID
 func (*controller) PsqlGetSpaceByID(res http.ResponseWriter, req *http.Request) {
 	res.Header().Set("Content-type", "application/json")
 	spaceIDs := req.URL.Query()["spaceID"]
@@ -94,7 +96,7 @@ func (*controller) PsqlGetSpaceByID(res http.ResponseWriter, req *http.Request) 
 	json.NewEncoder(res).Encode(space)
 }
 
-// CreatNewSpace adds a new space
+// FireStoreCreateNewSpace adds a new space to the Firestore DB
 func (*controller) FireStoreCreateNewSpace(res http.ResponseWriter, req *http.Request) {
 	res.Header().Set("Content-type", "application/json")
 	var space entity.ISpace
@@ -121,6 +123,7 @@ func (*controller) FireStoreCreateNewSpace(res http.ResponseWriter, req *http.Re
 
 }
 
+// PsqlCreateNewSpace adds a new space to the PostgreSQL DB
 func (*controller) PsqlCreateNewSpace(res http.ResponseWriter, req *http.Request) {
 	res.Header().Set("Content-type", "application/json")
 	var space entity.ISpace

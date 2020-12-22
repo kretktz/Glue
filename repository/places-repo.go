@@ -1,14 +1,9 @@
 package repository
 
-import (
-	"glue/glue-backend-golang/entity"
-)
+import "glue/glue-backend-golang/entity"
 
-type (
-	// PlaceRepository implements the methods Save and FindAll
-	PlaceRepository interface {
+// PlaceRepository implements the methods concerning places
+type PlaceRepository interface {
 		FireStoreSave(place *entity.Place) (*entity.Place, error)
 		FireStoreFindAll() ([]entity.Place, error)
 	}
-)
-

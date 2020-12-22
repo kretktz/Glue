@@ -31,11 +31,8 @@
       <change beforePath="$PROJECT_DIR$/repository/postgresql-repo.go" beforeDir="false" afterPath="$PROJECT_DIR$/repository/postgresql-repo.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/server.go" beforeDir="false" afterPath="$PROJECT_DIR$/server.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/service/ispace-service.go" beforeDir="false" afterPath="$PROJECT_DIR$/service/ispace-service.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/service/ispace-service_test.go" beforeDir="false" afterPath="$PROJECT_DIR$/service/ispace-service_test.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/service/iticket-service.go" beforeDir="false" afterPath="$PROJECT_DIR$/service/iticket-service.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/service/iticket-service_test.go" beforeDir="false" afterPath="$PROJECT_DIR$/service/iticket-service_test.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/service/place-service.go" beforeDir="false" afterPath="$PROJECT_DIR$/service/place-service.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/service/place-service_test.go" beforeDir="false" afterPath="$PROJECT_DIR$/service/place-service_test.go" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -124,21 +121,5 @@
       </map>
     </option>
     <option name="oldMeFiltersMigrated" value="true" />
-  </component>
-  <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="DlvLineBreakpoint">
-          <url>file://$PROJECT_DIR$/controller/ispace-controller.go</url>
-          <line>49</line>
-          <option name="timeStamp" value="2" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="DlvLineBreakpoint">
-          <url>file://$PROJECT_DIR$/repository/postgresql-repo.go</url>
-          <line>110</line>
-          <option name="timeStamp" value="3" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
   </component>
 </project>

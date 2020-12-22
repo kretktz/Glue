@@ -26,7 +26,7 @@ func NewPlaceController(service service.PlaceService) PlaceController {
 	return &controller{}
 }
 
-// GetPlaces gets places
+// FirestoreGetPlaces lists all places
 func (*controller) FireStoreGetPlaces(res http.ResponseWriter, req *http.Request) {
 	res.Header().Set("Content-type", "application/json")
 	places, err := placeService.FireStoreFindAll()
@@ -38,7 +38,7 @@ func (*controller) FireStoreGetPlaces(res http.ResponseWriter, req *http.Request
 	json.NewEncoder(res).Encode(places)
 }
 
-// AddPlace adds a place
+// FirestoreAddPlace adds a new place record to the Firestore DB
 func (*controller) FireStoreAddPlace(res http.ResponseWriter, req *http.Request) {
 	res.Header().Set("Content-type", "application/json")
 	var place entity.Place

@@ -31,7 +31,7 @@ const (
 	projectID      string = "glue-25e3b"
 )
 
-
+// NewFirestoreClient creates a client to connect to Firestore DB
 func NewFirestoreClient() (*firestore.Client, context.Context){
 	contx := context.Background()
 	client, err := firestore.NewClient(contx, projectID)
@@ -41,7 +41,7 @@ func NewFirestoreClient() (*firestore.Client, context.Context){
 	return client, contx
 }
 
-//Places
+//Place related functions
 func (*repo) FireStoreSave(place *entity.Place) (*entity.Place, error) {
 
 	client, ctx := NewFirestoreClient()
@@ -112,7 +112,9 @@ func (*repo) FireStoreFindAll() ([]entity.Place, error) {
 
 }
 
-//Spaces
+// ISpace related functions
+
+// FireStoreListSpaces lists all spaces along with tickets in the Firestore DB
 func (*repo) FireStoreListSpaces() ([]entity.ISpace, error) {
 
 	client, ctx:= NewFirestoreClient()
@@ -121,6 +123,7 @@ func (*repo) FireStoreListSpaces() ([]entity.ISpace, error) {
 	var (
 		spaces []entity.ISpace
 	)
+	// fetching space data
 	it := client.Collection("ISpace").Documents(ctx)
 	for {
 		doc, err := it.Next()
@@ -136,7 +139,7 @@ func (*repo) FireStoreListSpaces() ([]entity.ISpace, error) {
 			log.Fatalf("Failed to fetch space data: %v", err)
 		}
 
-		// getting ticket data
+		// fetching ticket data
 
 		var (
 			ticket entity.ITicket
@@ -156,14 +159,15 @@ func (*repo) FireStoreListSpaces() ([]entity.ISpace, error) {
 			tickets = append(tickets, ticket)
 		}
 
-		// insert ticket data into space
+		// insert ticket data into a corresponding space
 		space.Tickets = tickets
-
+		// add the resulting space with its tickets to a list of spaces
 		spaces = append(spaces, space)
 	}
 	return spaces, nil
 }
 
+// FireStoreGetSpaceByID fetches a space as specified by provided ID (UID)
 func (*repo) FireStoreGetSpaceByID(spaceID string) ([]entity.ISpace, error) {
 
 	client, ctx := NewFirestoreClient()
@@ -173,6 +177,7 @@ func (*repo) FireStoreGetSpaceByID(spaceID string) ([]entity.ISpace, error) {
 		space entity.ISpace
 		spaces []entity.ISpace
 	)
+	// fetching space data with its ticket options as specified by ID
 	it := client.Collection("ISpace").Where("UID", "==", spaceID).Documents(ctx)
 	for {
 		doc, err := it.Next()
@@ -191,7 +196,7 @@ func (*repo) FireStoreGetSpaceByID(spaceID string) ([]entity.ISpace, error) {
 			ticket entity.ITicket
 			tickets []entity.ITicket
 		)
-
+		// fetching associated ticket data
 		ticketSnap := client.Collection("ITicket").Where("UID", "==", space.UID)
 		docs, err := ticketSnap.Documents(ctx).GetAll()
 		if err != nil {
@@ -213,6 +218,7 @@ func (*repo) FireStoreGetSpaceByID(spaceID string) ([]entity.ISpace, error) {
 	return spaces, nil
 }
 
+// FireStoreCreateNewSpaces writes a new record to the Firestore DB
 func (*repo) FireStoreCreateNewSpace(space *entity.ISpace) (*entity.ISpace, error){
 	client, ctx := NewFirestoreClient()
 	defer client.Close()
@@ -276,6 +282,8 @@ func (*repo) FireStoreSaveSpace(space *entity.ISpace) (*entity.ISpace, error){
 }
 
 //Tickets
+
+// FireStoreListAllAvailableTickets lists all tickets with availability > 0 along with associated ISpace
 func (r *repo) FireStoreListAllAvailableTickets() ([]entity.ITicket, error) {
 
 	client, ctx := NewFirestoreClient()
@@ -285,6 +293,7 @@ func (r *repo) FireStoreListAllAvailableTickets() ([]entity.ITicket, error) {
 		ticket entity.ITicket
 		tickets []entity.ITicket
 	)
+	// fetching tickets data
 	it := client.Collection("ITicket").Where("Availability", ">", 0).Documents(ctx)
 	for {
 		doc, err := it.Next()
@@ -302,6 +311,7 @@ func (r *repo) FireStoreListAllAvailableTickets() ([]entity.ITicket, error) {
 				space entity.ISpace
 				spaces []entity.ISpace
 			)
+			// fetching space data associated with the ticket
 			spaceSnap := client.Collection("ISpace").Where("UID", "==", ticket.SpaceID)
 			docs, err := spaceSnap.Documents(ctx).GetAll()
 			if err != nil {

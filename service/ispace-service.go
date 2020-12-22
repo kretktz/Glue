@@ -6,9 +6,9 @@ import (
 	"glue/glue-backend-golang/repository"
 )
 
-type (
-	// ISpaceService implements the method ListSpaces
-	ISpaceService interface {
+
+// ISpaceService implements the methods concerning spaces
+type ISpaceService interface {
 		FireStoreListSpaces() ([]entity.ISpace, error)
 		FireStoreGetSpaceByID(spaceID string) ([]entity.ISpace, error)
 		FireStoreCreateSpace(space *entity.ISpace) (*entity.ISpace, error)
@@ -19,7 +19,6 @@ type (
 		PsqlGetSpaceByID(spaceID string) (entity.ISpace, error)
 		PsqlListSpacesWithTickets() ([]entity.ISpace, []entity.ITicket, error)
 	}
-)
 
 var (
 	spaceRepo repository.ISpaceRepository

@@ -10,20 +10,20 @@ import (
 
 var ticketService service.ITicketService
 
-//ISpaceController interface to implement ListSpaces and GetSpaceByID method
+// ITicketController interface to implement ITicket related methods
 type ITicketController interface {
 	FireStoreListAllAvailableTickets(res http.ResponseWriter, req *http.Request)
 
 	PsqlCreateNewTicket(res http.ResponseWriter, req *http.Request)
 }
 
-//NewISpaceController returns controller
+// NewITicketController returns controller
 func NewITicketController(service service.ITicketService) ITicketController {
 	ticketService = service
 	return &controller{}
 }
 
-// ListSpaces lists spaces
+// FireStoreListAllAvailableTickets lists all available tickets along with associated spaces
 func (*controller) FireStoreListAllAvailableTickets(res http.ResponseWriter, req *http.Request) {
 	res.Header().Set("Content-type", "application/json")
 	tickets, err := ticketService.FireStoreListAllAvailableTickets()
@@ -35,6 +35,7 @@ func (*controller) FireStoreListAllAvailableTickets(res http.ResponseWriter, req
 	json.NewEncoder(res).Encode(tickets)
 }
 
+// PsqlCreateNewTicket writes a new ITicket record to PostgreSQL DB
 func (*controller) PsqlCreateNewTicket(res http.ResponseWriter, req *http.Request) {
 	res.Header().Set("Content-type", "application/json")
 	var ticket entity.ITicket

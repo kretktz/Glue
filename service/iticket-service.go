@@ -6,6 +6,7 @@ import (
 	"glue/glue-backend-golang/repository"
 )
 
+// ITicketService interface implements methods concerning tickets
 type ITicketService interface {
 	FireStoreListAllAvailableTickets() ([]entity.ITicket, error)
 
