@@ -8,7 +8,7 @@ import (
 	"log"
 )
 
-//NewPostgreRepository creates a new repository
+//NewPsqlRepository creates a new repository
 func NewPsqlRepository() ISpaceRepository {
 	return &repo{}
 }
@@ -110,7 +110,7 @@ func (*repo) PsqlListSpacesWithTickets() ([]entity.ISpace, []entity.ITicket, err
 
 	defer rows.Close()
 
-	space := &entity.ISpace{}
+	space := entity.ISpace{}
 
 	for rows.Next() {
 		ticket := entity.ITicket{}
@@ -144,6 +144,9 @@ func (*repo) PsqlListSpacesWithTickets() ([]entity.ISpace, []entity.ITicket, err
 		}
 		space.Tickets = append(space.Tickets, ticket)
 	}
+
+	spaces = append(spaces, space)
+
 	err = rows.Err()
 	if err != nil {
 		log.Fatalf("Error in the for loop: %v", err)
