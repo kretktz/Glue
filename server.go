@@ -20,7 +20,7 @@ var (
 	ISpaceController = controller.NewISpaceController(ISpaceService)
 
 	ITicketRepository = repository.NewITicketRepository()
-	ITicketService = service.TicketService(ITicketRepository)
+	ITicketService    = service.TicketService(ITicketRepository)
 	ITicketController = controller.NewITicketController(ITicketService)
 
 	httpRouter = router.NewMuxRouter()
@@ -34,20 +34,18 @@ func main() {
 	})
 
 	//Places routes
-	httpRouter.GET("/places", placeController.GetPlaces)
-	httpRouter.POST("/places", placeController.AddPlace)
+	httpRouter.GET("/places", placeController.FireStoreGetPlaces)
+	httpRouter.POST("/places", placeController.FireStoreAddPlace)
 
 	//ISpace routes
-	httpRouter.GET("/spaces", ISpaceController.ListSpacesPsql)
-	httpRouter.GET("/spaceID", ISpaceController.GetSpaceByIDPsql)
-	httpRouter.GET("/spacestickets", ISpaceController.ListSpacesWithTicketsPsql)
-	httpRouter.POST("/newSpace", ISpaceController.CreateNewSpacePsql)
+	httpRouter.GET("/spaces", ISpaceController.PsqlListSpaces)
+	httpRouter.GET("/spaceID", ISpaceController.PsqlGetSpaceByID)
+	httpRouter.GET("/spacestickets", ISpaceController.PsqlListSpacesWithTickets)
+	httpRouter.POST("/newSpace", ISpaceController.PsqlCreateNewSpace)
 
 	//ITicket routes
-	httpRouter.GET("/availableTickets", ITicketController.ListAllAvailableTickets)
-	httpRouter.POST("/newTicket", ITicketController.CreateNewTicketPsql)
-
-
+	httpRouter.GET("/availableTickets", ITicketController.FireStoreListAllAvailableTickets)
+	httpRouter.POST("/newTicket", ITicketController.PsqlCreateNewTicket)
 
 	httpRouter.SERVE(port)
 

@@ -2,15 +2,15 @@ package service
 
 import (
 	"errors"
-	entity "glue/glue-backend-golang/entity"
-	repository "glue/glue-backend-golang/repository"
+	"glue/glue-backend-golang/entity"
+	"glue/glue-backend-golang/repository"
 )
 
 // PlaceService implements the methods Validate, Create and FindAll
 type PlaceService interface {
-	Validate(place *entity.Place) error
-	Create(place *entity.Place) (*entity.Place, error)
-	FindAll() ([]entity.Place, error)
+	FireStoreValidate(place *entity.Place) error
+	FireStoreCreate(place *entity.Place) (*entity.Place, error)
+	FireStoreFindAll() ([]entity.Place, error)
 }
 
 type service struct{}
@@ -25,7 +25,7 @@ func NewPlaceService(repository repository.PlaceRepository) PlaceService {
 	return &service{}
 }
 
-func (*service) Validate(place *entity.Place) error {
+func (*service) FireStoreValidate(place *entity.Place) error {
 	if place == nil {
 		err := errors.New("the place is not specified")
 		return err
@@ -33,10 +33,10 @@ func (*service) Validate(place *entity.Place) error {
 	return nil
 }
 
-func (*service) Create(place *entity.Place) (*entity.Place, error) {
-	return repo.Save(place)
+func (*service) FireStoreCreate(place *entity.Place) (*entity.Place, error) {
+	return repo.FireStoreSave(place)
 }
 
-func (*service) FindAll() ([]entity.Place, error) {
-	return repo.FindAll()
+func (*service) FireStoreFindAll() ([]entity.Place, error) {
+	return repo.FireStoreFindAll()
 }

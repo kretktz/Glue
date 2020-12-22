@@ -1,7 +1,7 @@
 package service
 
 import (
-	entity "glue/glue-backend-golang/entity"
+	"glue/glue-backend-golang/entity"
 	"testing"
 
 	"github.com/stretchr/testify/assert"

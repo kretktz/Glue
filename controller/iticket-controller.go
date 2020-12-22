@@ -12,9 +12,9 @@ var ticketService service.ITicketService
 
 //ISpaceController interface to implement ListSpaces and GetSpaceByID method
 type ITicketController interface {
-	ListAllAvailableTickets(res http.ResponseWriter, req *http.Request)
+	FireStoreListAllAvailableTickets(res http.ResponseWriter, req *http.Request)
 
-	CreateNewTicketPsql(res http.ResponseWriter, req *http.Request)
+	PsqlCreateNewTicket(res http.ResponseWriter, req *http.Request)
 }
 
 //NewISpaceController returns controller
@@ -24,9 +24,9 @@ func NewITicketController(service service.ITicketService) ITicketController {
 }
 
 // ListSpaces lists spaces
-func (*controller) ListAllAvailableTickets(res http.ResponseWriter, req *http.Request) {
+func (*controller) FireStoreListAllAvailableTickets(res http.ResponseWriter, req *http.Request) {
 	res.Header().Set("Content-type", "application/json")
-	tickets, err := ticketService.ListAllAvailableTickets()
+	tickets, err := ticketService.FireStoreListAllAvailableTickets()
 	if err != nil {
 		res.WriteHeader(http.StatusInternalServerError)
 		json.NewEncoder(res).Encode(errors.ServiceError{Message: "Error fetching the tickets"})
@@ -35,7 +35,7 @@ func (*controller) ListAllAvailableTickets(res http.ResponseWriter, req *http.Re
 	json.NewEncoder(res).Encode(tickets)
 }
 
-func (*controller) CreateNewTicketPsql(res http.ResponseWriter, req *http.Request) {
+func (*controller) PsqlCreateNewTicket(res http.ResponseWriter, req *http.Request) {
 	res.Header().Set("Content-type", "application/json")
 	var ticket entity.ITicket
 	err := json.NewDecoder(req.Body).Decode(&ticket)
@@ -50,7 +50,7 @@ func (*controller) CreateNewTicketPsql(res http.ResponseWriter, req *http.Reques
 		json.NewEncoder(res).Encode(errors.ServiceError{Message: err1.Error()})
 		return
 	}
-	result, err2 := ticketService.CreateNewTicketPsql(&ticket)
+	result, err2 := ticketService.PsqlCreateNewTicket(&ticket)
 	if err2 != nil {
 		res.WriteHeader(http.StatusInternalServerError)
 		json.NewEncoder(res).Encode(errors.ServiceError{Message: "Error saving the space"})

@@ -9,15 +9,15 @@ import (
 type (
 	// ISpaceService implements the method ListSpaces
 	ISpaceService interface {
-		ListSpaces() ([]entity.ISpace, error)
-		GetSpaceByID(spaceID string) ([]entity.ISpace, error)
-		CreateSpace(space *entity.ISpace) (*entity.ISpace, error)
-		ValidateSpace(e *entity.ISpace) error
+		FireStoreListSpaces() ([]entity.ISpace, error)
+		FireStoreGetSpaceByID(spaceID string) ([]entity.ISpace, error)
+		FireStoreCreateSpace(space *entity.ISpace) (*entity.ISpace, error)
+		FireStoreValidateSpace(e *entity.ISpace) error
 
-		ListSpacesPsql() ([]entity.ISpace, error)
-		CreateNewSpacePsql(space *entity.ISpace) (*entity.ISpace, error)
-		GetSpaceByIDPsql(spaceID string) (entity.ISpace, error)
-		ListSpacesWithTicketsPsql() ([]entity.ISpace, []entity.ITicket, error)
+		PsqlListSpaces() ([]entity.ISpace, error)
+		PsqlCreateNewSpace(space *entity.ISpace) (*entity.ISpace, error)
+		PsqlGetSpaceByID(spaceID string) (entity.ISpace, error)
+		PsqlListSpacesWithTickets() ([]entity.ISpace, []entity.ITicket, error)
 	}
 )
 
@@ -34,7 +34,7 @@ func SpacesService(repository repository.ISpaceRepository) ISpaceService {
 	return &service{}
 }
 
-func (*service) ValidateSpace(space *entity.ISpace) error {
+func (*service) FireStoreValidateSpace(space *entity.ISpace) error {
 	if space == nil {
 		err := errors.New("the space is not specified")
 		return err
@@ -42,34 +42,34 @@ func (*service) ValidateSpace(space *entity.ISpace) error {
 	return nil
 }
 
-func (*service) CreateSpace(space *entity.ISpace) (*entity.ISpace, error) {
-	return spaceRepo.SaveSpace(space)
+func (*service) FireStoreCreateSpace(space *entity.ISpace) (*entity.ISpace, error) {
+	return spaceRepo.FireStoreSaveSpace(space)
 }
 
-func (*service) ListSpaces() ([]entity.ISpace, error) {
-	return spaceRepo.ListSpaces()
+func (*service) FireStoreListSpaces() ([]entity.ISpace, error) {
+	return spaceRepo.FireStoreListSpaces()
 }
 
-func (*service) GetSpaceByID(spaceID string) ([]entity.ISpace, error) {
-	return spaceRepo.GetSpaceByID(spaceID)
+func (*service) FireStoreGetSpaceByID(spaceID string) ([]entity.ISpace, error) {
+	return spaceRepo.FireStoreGetSpaceByID(spaceID)
 }
 
-func (*service) CreateNewSpace(space *entity.ISpace) (*entity.ISpace, error){
-	return spaceRepo.CreateNewSpace(space)
+func (*service) FireStoreCreateNewSpace(space *entity.ISpace) (*entity.ISpace, error){
+	return spaceRepo.FireStoreCreateNewSpace(space)
 }
 
-func (*service) ListSpacesPsql() ([]entity.ISpace, error) {
-	return spaceRepo.ListSpacesPsql()
+func (*service) PsqlListSpaces() ([]entity.ISpace, error) {
+	return spaceRepo.PsqlListSpaces()
 }
 
-func (*service) CreateNewSpacePsql(space *entity.ISpace) (*entity.ISpace, error) {
-	return spaceRepo.CreateNewSpacePsql(space)
+func (*service) PsqlCreateNewSpace(space *entity.ISpace) (*entity.ISpace, error) {
+	return spaceRepo.PsqlCreateNewSpace(space)
 }
 
-func (*service) GetSpaceByIDPsql(spaceID string) (entity.ISpace, error) {
-	return spaceRepo.GetSpaceByIDPsql(spaceID)
+func (*service) PsqlGetSpaceByID(spaceID string) (entity.ISpace, error) {
+	return spaceRepo.PsqlGetSpaceByID(spaceID)
 }
 
-func (*service) ListSpacesWithTicketsPsql() ([]entity.ISpace, []entity.ITicket, error) {
-	return spaceRepo.ListSpacesWithTicketsPsql()
+func (*service) PsqlListSpacesWithTickets() ([]entity.ISpace, []entity.ITicket, error) {
+	return spaceRepo.PsqlListSpacesWithTickets()
 }

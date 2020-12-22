@@ -12,13 +12,37 @@ type MockISpace struct {
 	mock.Mock
 }
 
-func (mock *MockISpace) ListSpaces() ([]entity.ISpace, error) {
+func (mock *MockISpace) FireStoreSaveSpace(space *entity.ISpace) (*entity.ISpace, error) {
+	panic("implement me")
+}
+
+func (mock *MockISpace) FireStoreCreateNewSpace(space *entity.ISpace) (*entity.ISpace, error) {
+	panic("implement me")
+}
+
+func (mock *MockISpace) PsqlListSpaces() ([]entity.ISpace, error) {
+	panic("implement me")
+}
+
+func (mock *MockISpace) PsqlCreateNewSpace(space *entity.ISpace) (*entity.ISpace, error) {
+	panic("implement me")
+}
+
+func (mock *MockISpace) PsqlGetSpaceByID(spaceID string) (entity.ISpace, error) {
+	panic("implement me")
+}
+
+func (mock *MockISpace) PsqlListSpacesWithTickets() ([]entity.ISpace, []entity.ITicket, error) {
+	panic("implement me")
+}
+
+func (mock *MockISpace) FireStoreListSpaces() ([]entity.ISpace, error) {
 	args := mock.Called()
 	result := args.Get(0)
 	return result.([]entity.ISpace), args.Error(1)
 }
 
-func (mock *MockISpace) GetSpaceByID(spaceID string) ([]entity.ISpace, error) {
+func (mock *MockISpace) FireStoreGetSpaceByID(spaceID string) ([]entity.ISpace, error) {
 	args := mock.Called()
 	result := args.Get(0)
 	return result.([]entity.ISpace), args.Error(1)
@@ -37,7 +61,7 @@ func TestListSpaces(t *testing.T) {
 		NumberOfVisitors: "some number",
 		TelephoneNumber:  "some number",
 		Tickets: []entity.ITicket{
-			entity.ITicket{
+			{
 				Colour:      "some colour",
 				Description: "some description",
 				Name:        "some name",
@@ -45,7 +69,7 @@ func TestListSpaces(t *testing.T) {
 				Price:       64,
 				SpaceID:     "some id",
 				UID:         "some uid",
-			},
+						},
 		},
 		TopImageURL:            "some url.com",
 		UID:                    "some id",
@@ -59,7 +83,7 @@ func TestListSpaces(t *testing.T) {
 
 	testService := SpacesService(mockRepo)
 
-	result, _ := testService.ListSpaces()
+	result, _ := testService.FireStoreListSpaces()
 
 	//Mock Assertion
 	mockRepo.AssertExpectations(t)
@@ -75,7 +99,7 @@ func TestListSpaces(t *testing.T) {
 	assert.Equal(t, "some number", result[0].NumberOfVisitors)
 	assert.Equal(t, "some number", result[0].TelephoneNumber)
 	assert.Equal(t, []entity.ITicket{
-		entity.ITicket{
+		{
 			Colour:      "some colour",
 			Description: "some description",
 			Name:        "some name",
@@ -83,7 +107,7 @@ func TestListSpaces(t *testing.T) {
 			Price:       64,
 			SpaceID:     "some id",
 			UID:         "some uid",
-		},
+				},
 	}, result[0].Tickets)
 	assert.Equal(t, "some url.com", result[0].TopImageURL)
 	assert.Equal(t, "some id", result[0].UID)
@@ -93,7 +117,7 @@ func TestListSpaces(t *testing.T) {
 	assert.Equal(t, "some website", result[0].Website)
 }
 
-func TestService_GetSpaceByID(t *testing.T) {
+func TestService_FireStoreGetSpaceByID(t *testing.T) {
 	mockRepo := new(MockISpace)
 
 	space := entity.ISpace{Address: "some address",
@@ -106,7 +130,7 @@ func TestService_GetSpaceByID(t *testing.T) {
 		NumberOfVisitors: "some number",
 		TelephoneNumber:  "some number",
 		Tickets: []entity.ITicket{
-			entity.ITicket{
+			{
 				Colour:      "some colour",
 				Description: "some description",
 				Name:        "some name",
@@ -114,7 +138,7 @@ func TestService_GetSpaceByID(t *testing.T) {
 				Price:       64,
 				SpaceID:     "some id",
 				UID:         "some uid",
-			},
+						},
 		},
 		TopImageURL:            "some url.com",
 		UID:                    "some id",
@@ -128,7 +152,7 @@ func TestService_GetSpaceByID(t *testing.T) {
 
 	testService := SpacesService(mockRepo)
 
-	result, _ := testService.GetSpaceByID(spaceID)
+	result, _ := testService.FireStoreGetSpaceByID(spaceID)
 
 	//Mock Assertion
 	mockRepo.AssertExpectations(t)
@@ -144,7 +168,7 @@ func TestService_GetSpaceByID(t *testing.T) {
 	assert.Equal(t, "some number", result[0].NumberOfVisitors)
 	assert.Equal(t, "some number", result[0].TelephoneNumber)
 	assert.Equal(t, []entity.ITicket{
-		entity.ITicket{
+		{
 			Colour:      "some colour",
 			Description: "some description",
 			Name:        "some name",
@@ -152,7 +176,7 @@ func TestService_GetSpaceByID(t *testing.T) {
 			Price:       64,
 			SpaceID:     "some id",
 			UID:         "some uid",
-		},
+				},
 	}, result[0].Tickets)
 	assert.Equal(t, "some url.com", result[0].TopImageURL)
 	assert.Equal(t, "some id", result[0].UID)

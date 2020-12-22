@@ -13,16 +13,16 @@ var (
 	spaceID string
 )
 
-//ISpaceController interface to implement ListSpaces and GetSpaceByID method
+//ISpaceController interface to implement ISpace related methods
 type ISpaceController interface {
-	ListSpaces(res http.ResponseWriter, req *http.Request)
-	GetSpaceByID(res http.ResponseWriter, req *http.Request)
-	CreateNewSpace(res http.ResponseWriter, req *http.Request)
+	FireStoreListSpaces(res http.ResponseWriter, req *http.Request)
+	FireStoreGetSpaceByID(res http.ResponseWriter, req *http.Request)
+	FireStoreCreateNewSpace(res http.ResponseWriter, req *http.Request)
 
-	ListSpacesPsql(res http.ResponseWriter, req *http.Request)
-	CreateNewSpacePsql(res http.ResponseWriter, req *http.Request)
-	GetSpaceByIDPsql(res http.ResponseWriter, req *http.Request)
-	ListSpacesWithTicketsPsql(res http.ResponseWriter, req *http.Request)
+	PsqlListSpaces(res http.ResponseWriter, req *http.Request)
+	PsqlCreateNewSpace(res http.ResponseWriter, req *http.Request)
+	PsqlGetSpaceByID(res http.ResponseWriter, req *http.Request)
+	PsqlListSpacesWithTickets(res http.ResponseWriter, req *http.Request)
 
 }
 
@@ -33,9 +33,9 @@ func NewISpaceController(service service.ISpaceService) ISpaceController {
 }
 
 // ListSpaces lists all spaces
-func (*controller) ListSpaces(res http.ResponseWriter, req *http.Request) {
+func (*controller) FireStoreListSpaces(res http.ResponseWriter, req *http.Request) {
 	res.Header().Set("Content-type", "application/json")
-	spaces, err := spaceService.ListSpaces()
+	spaces, err := spaceService.FireStoreListSpaces()
 	if err != nil {
 		res.WriteHeader(http.StatusInternalServerError)
 		json.NewEncoder(res).Encode(errors.ServiceError{Message: "Error fetching the spaces"})
@@ -44,9 +44,9 @@ func (*controller) ListSpaces(res http.ResponseWriter, req *http.Request) {
 	json.NewEncoder(res).Encode(spaces)
 }
 
-func (*controller) ListSpacesPsql(res http.ResponseWriter, req *http.Request) {
+func (*controller) PsqlListSpaces(res http.ResponseWriter, req *http.Request) {
 	res.Header().Set("Content-type", "application/json")
-	spaces, err := spaceService.ListSpacesPsql()
+	spaces, err := spaceService.PsqlListSpaces()
 	if err != nil {
 		res.WriteHeader(http.StatusInternalServerError)
 		json.NewEncoder(res).Encode(errors.ServiceError{Message: "Error fetching the spaces"})
@@ -55,9 +55,9 @@ func (*controller) ListSpacesPsql(res http.ResponseWriter, req *http.Request) {
 	json.NewEncoder(res).Encode(spaces)
 }
 
-func (*controller) ListSpacesWithTicketsPsql(res http.ResponseWriter, req *http.Request) {
+func (*controller) PsqlListSpacesWithTickets(res http.ResponseWriter, req *http.Request) {
 	res.Header().Set("Content-type", "application/json")
-	spaces, tickets, err := spaceService.ListSpacesWithTicketsPsql()
+	spaces, tickets, err := spaceService.PsqlListSpacesWithTickets()
 	if err != nil {
 		res.WriteHeader(http.StatusInternalServerError)
 		json.NewEncoder(res).Encode(errors.ServiceError{Message: "Error fetching the spaces"})
@@ -68,11 +68,11 @@ func (*controller) ListSpacesWithTicketsPsql(res http.ResponseWriter, req *http.
 }
 
 // GetSpaceByID gets a particular space as specified by provided UID
-func (*controller) GetSpaceByID(res http.ResponseWriter, req *http.Request) {
+func (*controller) FireStoreGetSpaceByID(res http.ResponseWriter, req *http.Request) {
 	res.Header().Set("Content-type", "application/json")
 	spaceIDs := req.URL.Query()["spaceID"]
 	spaceID := spaceIDs[0]
-	space, err := spaceService.GetSpaceByID(string(spaceID))
+	space, err := spaceService.FireStoreGetSpaceByID(string(spaceID))
 	if err != nil {
 		res.WriteHeader(http.StatusInternalServerError)
 		json.NewEncoder(res).Encode(errors.ServiceError{Message: "Error getting the requested space"})
@@ -81,11 +81,11 @@ func (*controller) GetSpaceByID(res http.ResponseWriter, req *http.Request) {
 	json.NewEncoder(res).Encode(space)
 }
 
-func (*controller) GetSpaceByIDPsql(res http.ResponseWriter, req *http.Request) {
+func (*controller) PsqlGetSpaceByID(res http.ResponseWriter, req *http.Request) {
 	res.Header().Set("Content-type", "application/json")
 	spaceIDs := req.URL.Query()["spaceID"]
 	spaceID := spaceIDs[0]
-	space, err := spaceService.GetSpaceByIDPsql(string(spaceID))
+	space, err := spaceService.PsqlGetSpaceByID(string(spaceID))
 	if err != nil {
 		res.WriteHeader(http.StatusInternalServerError)
 		json.NewEncoder(res).Encode(errors.ServiceError{Message: "Error getting the requested space"})
@@ -95,7 +95,7 @@ func (*controller) GetSpaceByIDPsql(res http.ResponseWriter, req *http.Request) 
 }
 
 // CreatNewSpace adds a new space
-func (*controller) CreateNewSpace(res http.ResponseWriter, req *http.Request) {
+func (*controller) FireStoreCreateNewSpace(res http.ResponseWriter, req *http.Request) {
 	res.Header().Set("Content-type", "application/json")
 	var space entity.ISpace
 	err := json.NewDecoder(req.Body).Decode(&space)
@@ -104,13 +104,13 @@ func (*controller) CreateNewSpace(res http.ResponseWriter, req *http.Request) {
 		json.NewEncoder(res).Encode(errors.ServiceError{Message: "Error unmarshalling data"})
 		return
 	}
-	err1 := spaceService.ValidateSpace(&space)
+	err1 := spaceService.FireStoreValidateSpace(&space)
 	if err1 != nil {
 		res.WriteHeader(http.StatusInternalServerError)
 		json.NewEncoder(res).Encode(errors.ServiceError{Message: err1.Error()})
 		return
 	}
-	result, err2 := spaceService.CreateSpace(&space)
+	result, err2 := spaceService.FireStoreCreateSpace(&space)
 	if err2 != nil {
 		res.WriteHeader(http.StatusInternalServerError)
 		json.NewEncoder(res).Encode(errors.ServiceError{Message: "Error saving the space"})
@@ -121,7 +121,7 @@ func (*controller) CreateNewSpace(res http.ResponseWriter, req *http.Request) {
 
 }
 
-func (*controller) CreateNewSpacePsql(res http.ResponseWriter, req *http.Request) {
+func (*controller) PsqlCreateNewSpace(res http.ResponseWriter, req *http.Request) {
 	res.Header().Set("Content-type", "application/json")
 	var space entity.ISpace
 	err := json.NewDecoder(req.Body).Decode(&space)
@@ -130,13 +130,13 @@ func (*controller) CreateNewSpacePsql(res http.ResponseWriter, req *http.Request
 		json.NewEncoder(res).Encode(errors.ServiceError{Message: "Error unmarshalling data"})
 		return
 	}
-	err1 := spaceService.ValidateSpace(&space)
+	err1 := spaceService.FireStoreValidateSpace(&space)
 	if err1 != nil {
 		res.WriteHeader(http.StatusInternalServerError)
 		json.NewEncoder(res).Encode(errors.ServiceError{Message: err1.Error()})
 		return
 	}
-	result, err2 := spaceService.CreateNewSpacePsql(&space)
+	result, err2 := spaceService.PsqlCreateNewSpace(&space)
 	if err2 != nil {
 		res.WriteHeader(http.StatusInternalServerError)
 		json.NewEncoder(res).Encode(errors.ServiceError{Message: "Error saving the space"})

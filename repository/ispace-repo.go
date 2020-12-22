@@ -7,15 +7,15 @@ import (
 type (
 	// ISpaceRepository implements the methods concerning spaces
 	ISpaceRepository interface {
-		ListSpaces() ([]entity.ISpace, error)
-		GetSpaceByID(spaceID string) ([]entity.ISpace, error)
-		SaveSpace(space *entity.ISpace) (*entity.ISpace, error)
-		CreateNewSpace(space *entity.ISpace) (*entity.ISpace, error)
+		FireStoreListSpaces() ([]entity.ISpace, error)
+		FireStoreGetSpaceByID(spaceID string) ([]entity.ISpace, error)
+		FireStoreSaveSpace(space *entity.ISpace) (*entity.ISpace, error)
+		FireStoreCreateNewSpace(space *entity.ISpace) (*entity.ISpace, error)
 
-		ListSpacesPsql() ([]entity.ISpace, error)
-		CreateNewSpacePsql(space *entity.ISpace) (*entity.ISpace, error)
-		GetSpaceByIDPsql(spaceID string) (entity.ISpace, error)
-		ListSpacesWithTicketsPsql() ([]entity.ISpace, []entity.ITicket, error)
+		PsqlListSpaces() ([]entity.ISpace, error)
+		PsqlCreateNewSpace(space *entity.ISpace) (*entity.ISpace, error)
+		PsqlGetSpaceByID(spaceID string) (entity.ISpace, error)
+		PsqlListSpacesWithTickets() ([]entity.ISpace, []entity.ITicket, error)
 	}
 )
 

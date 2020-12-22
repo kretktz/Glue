@@ -2,9 +2,9 @@ package controller
 
 import (
 	"encoding/json"
-	entity "glue/glue-backend-golang/entity"
-	errors "glue/glue-backend-golang/errors"
-	service "glue/glue-backend-golang/service"
+	"glue/glue-backend-golang/entity"
+	"glue/glue-backend-golang/errors"
+	"glue/glue-backend-golang/service"
 	"net/http"
 )
 
@@ -16,8 +16,8 @@ var (
 
 //PlaceController interface to implement GetPlaces and AddPlace methods
 type PlaceController interface {
-	GetPlaces(res http.ResponseWriter, req *http.Request)
-	AddPlace(res http.ResponseWriter, req *http.Request)
+	FireStoreGetPlaces(res http.ResponseWriter, req *http.Request)
+	FireStoreAddPlace(res http.ResponseWriter, req *http.Request)
 }
 
 //NewPlaceController returns controller
@@ -27,9 +27,9 @@ func NewPlaceController(service service.PlaceService) PlaceController {
 }
 
 // GetPlaces gets places
-func (*controller) GetPlaces(res http.ResponseWriter, req *http.Request) {
+func (*controller) FireStoreGetPlaces(res http.ResponseWriter, req *http.Request) {
 	res.Header().Set("Content-type", "application/json")
-	places, err := placeService.FindAll()
+	places, err := placeService.FireStoreFindAll()
 	if err != nil {
 		res.WriteHeader(http.StatusInternalServerError)
 		json.NewEncoder(res).Encode(errors.ServiceError{Message: "Error fetching the places"})
@@ -39,7 +39,7 @@ func (*controller) GetPlaces(res http.ResponseWriter, req *http.Request) {
 }
 
 // AddPlace adds a place
-func (*controller) AddPlace(res http.ResponseWriter, req *http.Request) {
+func (*controller) FireStoreAddPlace(res http.ResponseWriter, req *http.Request) {
 	res.Header().Set("Content-type", "application/json")
 	var place entity.Place
 	err := json.NewDecoder(req.Body).Decode(&place)
@@ -48,13 +48,13 @@ func (*controller) AddPlace(res http.ResponseWriter, req *http.Request) {
 		json.NewEncoder(res).Encode(errors.ServiceError{Message: "Error unmarshalling data"})
 		return
 	}
-	err1 := placeService.Validate(&place)
+	err1 := placeService.FireStoreValidate(&place)
 	if err1 != nil {
 		res.WriteHeader(http.StatusInternalServerError)
 		json.NewEncoder(res).Encode(errors.ServiceError{Message: err1.Error()})
 		return
 	}
-	result, err2 := placeService.Create(&place)
+	result, err2 := placeService.FireStoreCreate(&place)
 	if err2 != nil {
 		res.WriteHeader(http.StatusInternalServerError)
 		json.NewEncoder(res).Encode(errors.ServiceError{Message: "Error saving the place"})

@@ -42,7 +42,7 @@ func NewFirestoreClient() (*firestore.Client, context.Context){
 }
 
 //Places
-func (*repo) Save(place *entity.Place) (*entity.Place, error) {
+func (*repo) FireStoreSave(place *entity.Place) (*entity.Place, error) {
 
 	client, ctx := NewFirestoreClient()
 	defer client.Close()
@@ -60,7 +60,7 @@ func (*repo) Save(place *entity.Place) (*entity.Place, error) {
 	return place, nil
 }
 
-func (*repo) FindAll() ([]entity.Place, error) {
+func (*repo) FireStoreFindAll() ([]entity.Place, error) {
 
 	client, ctx := NewFirestoreClient()
 	defer client.Close()
@@ -113,7 +113,7 @@ func (*repo) FindAll() ([]entity.Place, error) {
 }
 
 //Spaces
-func (*repo) ListSpaces() ([]entity.ISpace, error) {
+func (*repo) FireStoreListSpaces() ([]entity.ISpace, error) {
 
 	client, ctx:= NewFirestoreClient()
 	defer client.Close()
@@ -164,7 +164,7 @@ func (*repo) ListSpaces() ([]entity.ISpace, error) {
 	return spaces, nil
 }
 
-func (*repo) GetSpaceByID(spaceID string) ([]entity.ISpace, error) {
+func (*repo) FireStoreGetSpaceByID(spaceID string) ([]entity.ISpace, error) {
 
 	client, ctx := NewFirestoreClient()
 	defer client.Close()
@@ -213,7 +213,7 @@ func (*repo) GetSpaceByID(spaceID string) ([]entity.ISpace, error) {
 	return spaces, nil
 }
 
-func (*repo) CreateNewSpace(space *entity.ISpace) (*entity.ISpace, error){
+func (*repo) FireStoreCreateNewSpace(space *entity.ISpace) (*entity.ISpace, error){
 	client, ctx := NewFirestoreClient()
 	defer client.Close()
 
@@ -244,7 +244,7 @@ func (*repo) CreateNewSpace(space *entity.ISpace) (*entity.ISpace, error){
 	return space, nil
 }
 
-func (*repo) SaveSpace(space *entity.ISpace) (*entity.ISpace, error){
+func (*repo) FireStoreSaveSpace(space *entity.ISpace) (*entity.ISpace, error){
 	client, ctx := NewFirestoreClient()
 	defer client.Close()
 
@@ -276,7 +276,7 @@ func (*repo) SaveSpace(space *entity.ISpace) (*entity.ISpace, error){
 }
 
 //Tickets
-func (r *repo) ListAllAvailableTickets() ([]entity.ITicket, error) {
+func (r *repo) FireStoreListAllAvailableTickets() ([]entity.ITicket, error) {
 
 	client, ctx := NewFirestoreClient()
 	defer client.Close()

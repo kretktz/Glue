@@ -45,7 +45,7 @@ func PsqlConnect() *sql.DB {
 	return db
 }
 
-func (*repo) ListSpacesPsql() ([]entity.ISpace, error){
+func (*repo) PsqlListSpaces() ([]entity.ISpace, error){
 	db := PsqlConnect()
 
 	defer db.Close()
@@ -89,8 +89,7 @@ func (*repo) ListSpacesPsql() ([]entity.ISpace, error){
 	return spaces, nil
 }
 
-//TODO: Fix the SQL error "pq: invalid reference to FROM-clause entry for table"
-func (*repo) ListSpacesWithTicketsPsql() ([]entity.ISpace, []entity.ITicket, error){
+func (*repo) PsqlListSpacesWithTickets() ([]entity.ISpace, []entity.ITicket, error){
 	db := PsqlConnect()
 
 	defer db.Close()
@@ -98,7 +97,7 @@ func (*repo) ListSpacesWithTicketsPsql() ([]entity.ISpace, []entity.ITicket, err
 	var spaces []entity.ISpace
 	//var tickets []entity.ITicket
 
-	query := "SELECT public.ispace.name, public.ispace.uid, public.iticket.space_id, public.iticket.name, public.iticket.price \nFROM public.ispace s\nJOIN public.iticket t ON s.uid = t.space_id\nWHERE s.uid = $1"
+	query := "SELECT *\nFROM public.ispace JOIN public.iticket ON (space_id = ispace.uid);"
 
 	rows, err := db.Query(query)
 	if err != nil {
@@ -112,26 +111,44 @@ func (*repo) ListSpacesWithTicketsPsql() ([]entity.ISpace, []entity.ITicket, err
 	for rows.Next() {
 		ticket := entity.ITicket{}
 		err = rows.Scan(
+			&space.Address,
+			&space.Availability,
+			&space.Coordinates,
+			&space.Description,
+			&space.ImageURLS,
+			&space.Location,
 			&space.Name,
+			&space.NumberOfVisitors,
+			&space.TelephoneNumber,
+			&space.TopImageURL,
 			&space.UID,
-			&ticket.SpaceID,
+			&space.VisitorGreeting,
+			&space.VisitorSlackMessage,
+			&space.VisitorSlackWebhookURL,
+			&space.Website,
+			&ticket.Availability,
+			&ticket.Colour,
+			&ticket.Description,
 			&ticket.Name,
+			&ticket.Period,
 			&ticket.Price,
-		)
+			&ticket.SpaceID,
+			&ticket.UID,
+			)
 		if err != nil {
-			panic(err)
+			log.Fatalf("Error scanning rows in ITicket: %v", err)
 		}
 		space.Tickets = append(space.Tickets, ticket)
 	}
 	err = rows.Err()
 	if err != nil {
-		panic(err)
+		log.Fatalf("Error in the for loop: %v", err)
 	}
 
 	return spaces, space.Tickets, nil
 }
 
-func (*repo) CreateNewSpacePsql(space *entity.ISpace) (*entity.ISpace, error) {
+func (*repo) PsqlCreateNewSpace(space *entity.ISpace) (*entity.ISpace, error) {
 	db := PsqlConnect()
 	defer db.Close()
 
@@ -151,14 +168,14 @@ func (*repo) CreateNewSpacePsql(space *entity.ISpace) (*entity.ISpace, error) {
 
 }
 
-func (*repo) GetSpaceByIDPsql(spaceID string) (entity.ISpace, error) {
+func (*repo) PsqlGetSpaceByID(spaceID string) (entity.ISpace, error) {
 	db := PsqlConnect()
 
 	defer db.Close()
 
 	var space entity.ISpace
 
-	rows, err := db.Query("SELECT * FROM public.ispace WHERE uid = $1", spaceID)
+	rows, err := db.Query("SELECT ispace.address, ispace.availability, ispace.coordinates, ispace.description, ispace.image_urls, ispace.location, ispace.name, ispace.number_of_visitors, ispace.telephone_number, ispace.top_image_url, ispace.uid, ispace.visitor_greeting, ispace.visitor_slack_message, ispace.visitor_slack_webhook_url, ispace.website \nFROM public.ispace WHERE uid = $1", spaceID)
 	if err != nil {
 		log.Fatalf("Couldn't fetch the space: %v", err)
 		return space, err
@@ -175,7 +192,6 @@ func (*repo) GetSpaceByIDPsql(spaceID string) (entity.ISpace, error) {
 			&space.Name,
 			&space.NumberOfVisitors,
 			&space.TelephoneNumber,
-			&space.Tickets,
 			&space.TopImageURL,
 			&space.UID,
 			&space.VisitorGreeting,
@@ -189,13 +205,13 @@ func (*repo) GetSpaceByIDPsql(spaceID string) (entity.ISpace, error) {
 	}
 	err = rows.Err()
 	if err != nil {
-		log.Fatalf("Error GetSpacebyIDPsql: %v", err)
+		log.Fatalf("Error PsqlGetSpaceByID: %v", err)
 	}
 
 	return space, nil
 }
 
-func (*repo) CreateNewTicketPsql(ticket *entity.ITicket) (*entity.ITicket, error) {
+func (*repo) PsqlCreateNewTicket(ticket *entity.ITicket) (*entity.ITicket, error) {
 	db := PsqlConnect()
 	defer db.Close()
 

@@ -7,9 +7,9 @@ import (
 )
 
 type ITicketService interface {
-	ListAllAvailableTickets() ([]entity.ITicket, error)
+	FireStoreListAllAvailableTickets() ([]entity.ITicket, error)
 
-	CreateNewTicketPsql(ticket *entity.ITicket) (*entity.ITicket, error)
+	PsqlCreateNewTicket(ticket *entity.ITicket) (*entity.ITicket, error)
 	ValidateTicketPsql(ticket *entity.ITicket) error
 }
 
@@ -22,12 +22,12 @@ func TicketService(repository repository.ITicketRepository) ITicketService {
 }
 
 
-func (*service) ListAllAvailableTickets() ([]entity.ITicket, error) {
-	return ticketRepo.ListAllAvailableTickets()
+func (*service) FireStoreListAllAvailableTickets() ([]entity.ITicket, error) {
+	return ticketRepo.FireStoreListAllAvailableTickets()
 }
 
-func (*service) CreateNewTicketPsql(ticket *entity.ITicket) (*entity.ITicket, error) {
-	return ticketRepo.CreateNewTicketPsql(ticket)
+func (*service) PsqlCreateNewTicket(ticket *entity.ITicket) (*entity.ITicket, error) {
+	return ticketRepo.PsqlCreateNewTicket(ticket)
 }
 
 func (*service) ValidateTicketPsql(ticket *entity.ITicket) error {

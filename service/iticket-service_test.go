@@ -12,13 +12,17 @@ type MockITicket struct {
 	mock.Mock
 }
 
-func (mock *MockITicket) ListAllAvailableTickets() ([]entity.ITicket, error) {
+func (mock *MockITicket) PsqlCreateNewTicket(ticket *entity.ITicket) (*entity.ITicket, error) {
+	panic("implement me")
+}
+
+func (mock *MockITicket) FireStoreListAllAvailableTickets() ([]entity.ITicket, error) {
 	args := mock.Called()
 	result := args.Get(0)
 	return result.([]entity.ITicket), args.Error(1)
 }
 
-func TestService_ListAllAvailableTickets(t *testing.T) {
+func TestService_FireStoreListAllAvailableTickets(t *testing.T) {
 	mockRepo := new(MockITicket)
 
 	var(
@@ -63,7 +67,7 @@ func TestService_ListAllAvailableTickets(t *testing.T) {
 
 	testService := TicketService(mockRepo)
 
-	result, _ := testService.ListAllAvailableTickets()
+	result, _ := testService.FireStoreListAllAvailableTickets()
 
 	//Mock Assertion
 	mockRepo.AssertExpectations(t)
