@@ -35,12 +35,12 @@ func PsqlConnect() *sql.DB {
 
 	db, err := sql.Open("postgres", psqlInfo)
 	if err != nil {
-		panic(err)
+		log.Fatalf("Error opening database: %v", err)
 	}
 
 	err = db.Ping()
 	if err != nil {
-		panic(err)
+		log.Fatalf("Error connecting to the DB: %v", err)
 	}
 
 	return db
@@ -80,7 +80,7 @@ func (*repo) PsqlListSpaces() ([]entity.ISpace, error){
 			&space.Website,
 		)
 		if err != nil {
-			panic(err)
+			log.Fatalf("Error iterating over records: %v", err)
 		}
 		spaces = append(spaces, space)
 	}

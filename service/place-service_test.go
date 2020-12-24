@@ -12,28 +12,28 @@ type MockRepository struct {
 	mock.Mock
 }
 
-func (mock *MockRepository) Save(place *entity.Place) (*entity.Place, error) {
+func (mock *MockRepository) FireStoreSave(place *entity.Place) (*entity.Place, error) {
 	args := mock.Called()
 	result := args.Get(0)
 	return result.(*entity.Place), args.Error(1)
 }
 
-func (mock *MockRepository) FindAll() ([]entity.Place, error) {
+func (mock *MockRepository) FireStoreFindAll() ([]entity.Place, error) {
 	args := mock.Called()
 	result := args.Get(0)
 	return result.([]entity.Place), args.Error(1)
 }
 
-func TestFindAll(t *testing.T) {
+func Test_FireStoreFindAll(t *testing.T) {
 	mockRepo := new(MockRepository)
 
 	place := entity.Place{PlaceName: "Name", PlaceLocation: "Takamatsu", PhoneNumber: "5678"}
 	// Setup Expectations
-	mockRepo.On("FindAll").Return([]entity.Place{place}, nil)
+	mockRepo.On("FireStoreFindAll").Return([]entity.Place{place}, nil)
 
 	testService := NewPlaceService(mockRepo)
 
-	result, _ := testService.FindAll()
+	result, _ := testService.FireStoreFindAll()
 
 	//Mock Assertion
 	mockRepo.AssertExpectations(t)
@@ -44,17 +44,17 @@ func TestFindAll(t *testing.T) {
 	assert.Equal(t, "5678", result[0].PhoneNumber)
 }
 
-func TestCreate(t *testing.T) {
+func Test_FireStoreCreate(t *testing.T) {
 	mockRepo := new(MockRepository)
 
 	place := entity.Place{PlaceName: "Name", PlaceLocation: "Takamatsu", PhoneNumber: "5678"}
 
 	//Setup expectations
-	mockRepo.On("Save").Return(&place, nil)
+	mockRepo.On("FireStoreSave").Return(&place, nil)
 
 	testService := NewPlaceService(mockRepo)
 
-	result, err := testService.Create(&place)
+	result, err := testService.FireStoreCreate(&place)
 
 	mockRepo.AssertExpectations(t)
 
@@ -64,11 +64,11 @@ func TestCreate(t *testing.T) {
 	assert.Nil(t, err)
 }
 
-func TestValidateEmptyPlace(t *testing.T) {
+func Test_FireStoreValidateEmptyPlace(t *testing.T) {
 	testService := NewPlaceService(nil)
 
-	err := testService.Validate(nil)
+	err := testService.FireStoreValidate(nil)
 
 	assert.NotNil(t, err)
-	assert.Equal(t, "The place is not specified", err.Error())
+	assert.Equal(t, "the place is not specified", err.Error())
 }

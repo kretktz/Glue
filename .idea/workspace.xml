@@ -21,11 +21,9 @@
   <component name="ChangeListManager">
     <list default="true" id="957ab00c-e873-4518-b528-d793ce7656f6" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/controller/ispace-controller.go" beforeDir="false" afterPath="$PROJECT_DIR$/controller/ispace-controller.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/repository/ispace-repo.go" beforeDir="false" afterPath="$PROJECT_DIR$/repository/ispace-repo.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/repository/firestore-repo.go" beforeDir="false" afterPath="$PROJECT_DIR$/repository/firestore-repo.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/repository/postgresql-repo.go" beforeDir="false" afterPath="$PROJECT_DIR$/repository/postgresql-repo.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/service/ispace-service.go" beforeDir="false" afterPath="$PROJECT_DIR$/service/ispace-service.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/service/ispace-service_test.go" beforeDir="false" afterPath="$PROJECT_DIR$/service/ispace-service_test.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/service/place-service_test.go" beforeDir="false" afterPath="$PROJECT_DIR$/service/place-service_test.go" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -71,7 +69,7 @@
     <property name="run.code.analysis.last.selected.profile" value="pProject Default" />
     <property name="settings.editor.selected.configurable" value="SQL Dialects" />
   </component>
-  <component name="RunManager" selected="Go Test.ispace-service_test.go">
+  <component name="RunManager" selected="Go Test.place-service_test.go">
     <configuration name="ispace-service_test.go" type="GoTestRunConfiguration" factoryName="Go Test" temporary="true" nameIsGenerated="true">
       <module name="glue-backend-golang" />
       <working_directory value="$PROJECT_DIR$/service" />
@@ -94,8 +92,8 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Go Test.ispace-service_test.go" />
         <item itemvalue="Go Test.place-service_test.go" />
+        <item itemvalue="Go Test.ispace-service_test.go" />
       </list>
     </recent_temporary>
   </component>

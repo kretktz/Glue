@@ -281,7 +281,7 @@ func (*repo) FireStoreSaveSpace(space *entity.ISpace) (*entity.ISpace, error){
 	return space, nil
 }
 
-//Tickets
+// ITickets Related functions
 
 // FireStoreListAllAvailableTickets lists all tickets with availability > 0 along with associated ISpace
 func (r *repo) FireStoreListAllAvailableTickets() ([]entity.ITicket, error) {
