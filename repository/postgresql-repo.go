@@ -182,18 +182,19 @@ func (*repo) PsqlCreateNewSpace(space *entity.ISpace) (*entity.ISpace, error) {
 }
 
 // PsqlGetSpaceByID returns a single space as specified by the provided ID
-func (*repo) PsqlGetSpaceByID(spaceID string) (entity.ISpace, error) {
+func (*repo) PsqlGetSpaceByID(spaceID string) ([]entity.ISpace, error) {
 	// connecting to the DB
 	db := PsqlConnect()
 	// keeping the connection open
 	defer db.Close()
 
 	var space entity.ISpace
+	var spaces []entity.ISpace
 	// query build
 	rows, err := db.Query("SELECT ispace.address, ispace.availability, ispace.coordinates, ispace.description, ispace.image_urls, ispace.location, ispace.name, ispace.number_of_visitors, ispace.telephone_number, ispace.top_image_url, ispace.uid, ispace.visitor_greeting, ispace.visitor_slack_message, ispace.visitor_slack_webhook_url, ispace.website \nFROM public.ispace WHERE uid = $1", spaceID)
 	if err != nil {
 		log.Fatalf("Couldn't fetch the space: %v", err)
-		return space, err
+		return spaces, err
 	}
 	defer rows.Close()
 	for rows.Next(){
@@ -217,13 +218,14 @@ func (*repo) PsqlGetSpaceByID(spaceID string) (entity.ISpace, error) {
 		if err != nil {
 			log.Fatalf("Could not fetch the Space details: %v", err)
 		}
+		spaces = append(spaces, space)
 	}
 	err = rows.Err()
 	if err != nil {
 		log.Fatalf("Error PsqlGetSpaceByID: %v", err)
 	}
 
-	return space, nil
+	return spaces, nil
 }
 
 // PsqlCreateNewTicket writes a new ITicket record to the PostgreSQL DB

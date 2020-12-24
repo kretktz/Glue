@@ -250,37 +250,6 @@ func (*repo) FireStoreCreateNewSpace(space *entity.ISpace) (*entity.ISpace, erro
 	return space, nil
 }
 
-func (*repo) FireStoreSaveSpace(space *entity.ISpace) (*entity.ISpace, error){
-	client, ctx := NewFirestoreClient()
-	defer client.Close()
-
-	doc, wr, err := client.Collection("ISpace").Add(ctx, entity.ISpace{
-		Address:                space.Address,
-		Availability:           space.Availability,
-		Coordinates:            space.Coordinates,
-		Description:            space.Description,
-		ImageURLS:              space.ImageURLS,
-		Location:               space.Location,
-		Name:                   space.Name,
-		NumberOfVisitors:       space.NumberOfVisitors,
-		TelephoneNumber:        space.TelephoneNumber,
-		Tickets:                space.Tickets,
-		TopImageURL:            space.TopImageURL,
-		UID:                    space.UID,
-		VisitorGreeting:        space.VisitorGreeting,
-		VisitorSlackMessage:    space.VisitorSlackMessage,
-		VisitorSlackWebhookURL: space.VisitorSlackWebhookURL,
-		Website:                space.Website,
-	})
-	doc.Snapshots(ctx)
-	log.Printf("Data added: %v and %v", wr, doc)
-	if err != nil {
-		log.Fatalf("Failed to add a new space: %v", err)
-		return nil, err
-	}
-	return space, nil
-}
-
 // ITickets Related functions
 
 // FireStoreListAllAvailableTickets lists all tickets with availability > 0 along with associated ISpace

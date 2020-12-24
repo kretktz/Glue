@@ -111,7 +111,7 @@ func (*controller) FireStoreCreateNewSpace(res http.ResponseWriter, req *http.Re
 		json.NewEncoder(res).Encode(errors.ServiceError{Message: err1.Error()})
 		return
 	}
-	result, err2 := spaceService.FireStoreCreateSpace(&space)
+	result, err2 := spaceService.FireStoreCreateNewSpace(&space)
 	if err2 != nil {
 		res.WriteHeader(http.StatusInternalServerError)
 		json.NewEncoder(res).Encode(errors.ServiceError{Message: "Error saving the space"})

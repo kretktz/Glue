@@ -13,7 +13,49 @@ type MockITicket struct {
 }
 
 func (mock *MockITicket) PsqlCreateNewTicket(ticket *entity.ITicket) (*entity.ITicket, error) {
-	panic("implement me")
+	args := mock.Called()
+	result := args.Get(0)
+	return result.(*entity.ITicket), args.Error(1)
+}
+
+func TestService_PsqlCreateNewTicket(t *testing.T) {
+	mockRepo := new(MockITicket)
+
+	var(
+		avail int64 = 2
+		period int64 = 2
+		price int64 = 2
+	)
+
+	ticket := entity.ITicket{
+		Availability: avail,
+		Colour:       "colour",
+		Description:  "description",
+		Name:         "name",
+		Period:       period,
+		Price:        price,
+		SpaceID:      "space_id",
+		UID:          "uid",
+	}
+
+	//Setup Expectations
+	mockRepo.On("PsqlCreateNewTicket").Return(&ticket, nil)
+
+	testService := TicketService(mockRepo)
+
+	result, err := testService.PsqlCreateNewTicket(&ticket)
+
+	mockRepo.AssertExpectations(t)
+
+	assert.Equal(t, avail, result.Availability)
+	assert.Equal(t, "colour", result.Colour)
+	assert.Equal(t, "description", result.Description)
+	assert.Equal(t, "name", result.Name)
+	assert.Equal(t, period, result.Period)
+	assert.Equal(t, price, result.Price)
+	assert.Equal(t, "space_id", result.SpaceID)
+	assert.Equal(t, "uid", result.UID)
+	assert.Nil(t, err)
 }
 
 func (mock *MockITicket) FireStoreListAllAvailableTickets() ([]entity.ITicket, error) {
@@ -63,7 +105,7 @@ func TestService_FireStoreListAllAvailableTickets(t *testing.T) {
 	}
 
 	//Setup expectations
-	mockRepo.On("ListAllAvailableTickets").Return([]entity.ITicket{ticket}, nil)
+	mockRepo.On("FireStoreListAllAvailableTickets").Return([]entity.ITicket{ticket}, nil)
 
 	testService := TicketService(mockRepo)
 

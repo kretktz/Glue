@@ -6,17 +6,16 @@ import (
 	"glue/glue-backend-golang/repository"
 )
 
-
 // ISpaceService implements the methods concerning spaces
 type ISpaceService interface {
 		FireStoreListSpaces() ([]entity.ISpace, error)
 		FireStoreGetSpaceByID(spaceID string) ([]entity.ISpace, error)
-		FireStoreCreateSpace(space *entity.ISpace) (*entity.ISpace, error)
+		FireStoreCreateNewSpace(space *entity.ISpace) (*entity.ISpace, error)
 		FireStoreValidateSpace(e *entity.ISpace) error
 
 		PsqlListSpaces() ([]entity.ISpace, error)
 		PsqlCreateNewSpace(space *entity.ISpace) (*entity.ISpace, error)
-		PsqlGetSpaceByID(spaceID string) (entity.ISpace, error)
+		PsqlGetSpaceByID(spaceID string) ([]entity.ISpace, error)
 		PsqlListSpacesWithTickets() ([]entity.ISpace, error)
 	}
 
@@ -24,8 +23,6 @@ var (
 	spaceRepo repository.ISpaceRepository
 	spaceID string
 )
-
-
 
 //SpacesService creates a new service for ISpace
 func SpacesService(repository repository.ISpaceRepository) ISpaceService {
@@ -39,10 +36,6 @@ func (*service) FireStoreValidateSpace(space *entity.ISpace) error {
 		return err
 	}
 	return nil
-}
-
-func (*service) FireStoreCreateSpace(space *entity.ISpace) (*entity.ISpace, error) {
-	return spaceRepo.FireStoreSaveSpace(space)
 }
 
 func (*service) FireStoreListSpaces() ([]entity.ISpace, error) {
@@ -65,7 +58,7 @@ func (*service) PsqlCreateNewSpace(space *entity.ISpace) (*entity.ISpace, error)
 	return spaceRepo.PsqlCreateNewSpace(space)
 }
 
-func (*service) PsqlGetSpaceByID(spaceID string) (entity.ISpace, error) {
+func (*service) PsqlGetSpaceByID(spaceID string) ([]entity.ISpace, error) {
 	return spaceRepo.PsqlGetSpaceByID(spaceID)
 }
 
