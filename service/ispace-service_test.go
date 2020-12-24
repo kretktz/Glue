@@ -20,17 +20,159 @@ func (mock *MockISpace) FireStoreCreateNewSpace(space *entity.ISpace) (*entity.I
 	panic("implement me")
 }
 
-func (mock *MockISpace) PsqlListSpaces() ([]entity.ISpace, error) {
-	panic("implement me")
-}
-
 func (mock *MockISpace) PsqlCreateNewSpace(space *entity.ISpace) (*entity.ISpace, error) {
 	panic("implement me")
 }
 
-func (mock *MockISpace) PsqlGetSpaceByID(spaceID string) (entity.ISpace, error) {
-	panic("implement me")
+func (mock *MockISpace) PsqlListSpaces() ([]entity.ISpace, error) {
+	args := mock.Called()
+	result := args.Get(0)
+	return result.([]entity.ISpace), args.Error(1)
 }
+
+func TestService_PsqlListSpaces(t *testing.T) {
+	mockRepo := new(MockISpace)
+
+	space := entity.ISpace{Address: "some address",
+		Availability:     "available",
+		Coordinates:      "some coordinates",
+		Description:      "some description",
+		ImageURLS:        "some url.com",
+		Location:         "some location",
+		Name:             "some name",
+		NumberOfVisitors: "some number",
+		TelephoneNumber:  "some number",
+		Tickets: []entity.ITicket{
+			{
+				Colour:      "some colour",
+				Description: "some description",
+				Name:        "some name",
+				Period:      64,
+				Price:       64,
+				SpaceID:     "some id",
+				UID:         "some uid",
+			},
+		},
+		TopImageURL:            "some url.com",
+		UID:                    "some id",
+		VisitorGreeting:        "some greeting",
+		VisitorSlackMessage:    "some message",
+		VisitorSlackWebhookURL: "some url",
+		Website:                "some website"}
+
+	// Setup Expectations
+	mockRepo.On("PsqlListSpaces").Return([]entity.ISpace{space}, nil)
+
+	testService := SpacesService(mockRepo)
+
+	result, _ := testService.PsqlListSpaces()
+
+	//Mock Assertion
+	mockRepo.AssertExpectations(t)
+
+	//Data Assertion
+	assert.Equal(t, "some address", result[0].Address)
+	assert.Equal(t, "available", result[0].Availability)
+	assert.Equal(t, "some coordinates", result[0].Coordinates)
+	assert.Equal(t, "some description", result[0].Description)
+	assert.Equal(t, "some url.com", result[0].ImageURLS)
+	assert.Equal(t, "some location", result[0].Location)
+	assert.Equal(t, "some name", result[0].Name)
+	assert.Equal(t, "some number", result[0].NumberOfVisitors)
+	assert.Equal(t, "some number", result[0].TelephoneNumber)
+	assert.Equal(t, []entity.ITicket{
+		{
+			Colour:      "some colour",
+			Description: "some description",
+			Name:        "some name",
+			Period:      64,
+			Price:       64,
+			SpaceID:     "some id",
+			UID:         "some uid",
+		},
+	}, result[0].Tickets)
+	assert.Equal(t, "some url.com", result[0].TopImageURL)
+	assert.Equal(t, "some id", result[0].UID)
+	assert.Equal(t, "some greeting", result[0].VisitorGreeting)
+	assert.Equal(t, "some message", result[0].VisitorSlackMessage)
+	assert.Equal(t, "some url", result[0].VisitorSlackWebhookURL)
+	assert.Equal(t, "some website", result[0].Website)
+}
+
+func (mock *MockISpace) PsqlGetSpaceByID(spaceID string) (entity.ISpace, error) {
+	args := mock.Called()
+	result := args.Get(0)
+	return result.(entity.ISpace), args.Error(1)
+}
+
+//func TestService_PsqlGetSpaceByID(t *testing.T) {
+//	mockRepo := new(MockISpace)
+//
+//	space := entity.ISpace{Address: "some address",
+//		Availability:     "available",
+//		Coordinates:      "some coordinates",
+//		Description:      "some description",
+//		ImageURLS:        "some url.com",
+//		Location:         "some location",
+//		Name:             "some name",
+//		NumberOfVisitors: "some number",
+//		TelephoneNumber:  "some number",
+//		Tickets: []entity.ITicket{
+//			{
+//				Colour:      "some colour",
+//				Description: "some description",
+//				Name:        "some name",
+//				Period:      64,
+//				Price:       64,
+//				SpaceID:     "some id",
+//				UID:         "some uid",
+//			},
+//		},
+//		TopImageURL:            "some url.com",
+//		UID:                    "some id",
+//		VisitorGreeting:        "some greeting",
+//		VisitorSlackMessage:    "some message",
+//		VisitorSlackWebhookURL: "some url",
+//		Website:                "some website"}
+//
+//	// Setup Expectations
+//	mockRepo.On("PsqlGetSpaceByID").Return(entity.ISpace{space}, nil)
+//
+//	testService := SpacesService(mockRepo)
+//
+//	result, _ := testService.PsqlGetSpaceByID(spaceID)
+//
+//	//Mock Assertion
+//	mockRepo.AssertExpectations(t)
+//
+//	//Data Assertion
+//	assert.Equal(t, "some address", result.Address)
+//	assert.Equal(t, "available", result.Availability)
+//	assert.Equal(t, "some coordinates", result.Coordinates)
+//	assert.Equal(t, "some description", result.Description)
+//	assert.Equal(t, "some url.com", result.ImageURLS)
+//	assert.Equal(t, "some location", result.Location)
+//	assert.Equal(t, "some name", result.Name)
+//	assert.Equal(t, "some number", result.NumberOfVisitors)
+//	assert.Equal(t, "some number", result.TelephoneNumber)
+//	assert.Equal(t, []entity.ITicket{
+//		{
+//			Colour:      "some colour",
+//			Description: "some description",
+//			Name:        "some name",
+//			Period:      64,
+//			Price:       64,
+//			SpaceID:     "some id",
+//			UID:         "some uid",
+//		},
+//	}, result.Tickets)
+//	assert.Equal(t, "some url.com", result.TopImageURL)
+//	assert.Equal(t, "some id", result.UID)
+//	assert.Equal(t, "some greeting", result.VisitorGreeting)
+//	assert.Equal(t, "some message", result.VisitorSlackMessage)
+//	assert.Equal(t, "some url", result.VisitorSlackWebhookURL)
+//	assert.Equal(t, "some website", result.Website)
+//}
 
 func (mock *MockISpace) PsqlListSpacesWithTickets() ([]entity.ISpace, error) {
 	panic("implement me")
@@ -48,7 +190,7 @@ func (mock *MockISpace) FireStoreGetSpaceByID(spaceID string) ([]entity.ISpace, 
 	return result.([]entity.ISpace), args.Error(1)
 }
 
-func TestListSpaces(t *testing.T) {
+func TestService_FireStoreListSpaces(t *testing.T) {
 	mockRepo := new(MockISpace)
 
 	space := entity.ISpace{Address: "some address",
