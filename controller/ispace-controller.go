@@ -70,8 +70,8 @@ func (*controller) PsqlListSpacesWithTickets(res http.ResponseWriter, req *http.
 // FireStoreGetSpaceByID gets a particular space as specified by provided UID
 func (*controller) FireStoreGetSpaceByID(res http.ResponseWriter, req *http.Request) {
 	res.Header().Set("Content-type", "application/json")
-	spaceIDs := req.URL.Query()["spaceID"]
-	spaceID := spaceIDs[0]
+	query := req.URL.Query()["spaceID"]
+	spaceID := query[0]
 	space, err := spaceService.FireStoreGetSpaceByID(string(spaceID))
 	if err != nil {
 		res.WriteHeader(http.StatusInternalServerError)
@@ -84,8 +84,8 @@ func (*controller) FireStoreGetSpaceByID(res http.ResponseWriter, req *http.Requ
 // PsqlGetSpaceByID gets a particular space as specified by provided UID
 func (*controller) PsqlGetSpaceByID(res http.ResponseWriter, req *http.Request) {
 	res.Header().Set("Content-type", "application/json")
-	spaceIDs := req.URL.Query()["spaceID"]
-	spaceID := spaceIDs[0]
+	query := req.URL.Query()["spaceID"]
+	spaceID := query[0]
 	space, err := spaceService.PsqlGetSpaceByID(string(spaceID))
 	if err != nil {
 		res.WriteHeader(http.StatusInternalServerError)
