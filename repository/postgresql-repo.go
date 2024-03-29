@@ -14,11 +14,11 @@ func NewPsqlRepository() ISpaceRepository {
 }
 
 const (
-	host = "localhost"
+	host = "hostname"
 	port = 5432
-	user = "postgres"
-	password = "sedes123"
-	dbname = "calhounio_demo"
+	user = "username"
+	password = "password"
+	dbname = "database_name"
 )
 
 // PsqlConnect creates a new connection to the PostgreSQL DB
