@@ -28,7 +28,7 @@ func NewITicketRepository() ITicketRepository {
 
 
 const (
-	projectID      string = "glue-25e3b"
+	projectID      string = "replace-me-with-projectID"
 )
 
 // NewFirestoreClient creates a client to connect to Firestore DB
